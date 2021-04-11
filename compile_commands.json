@@ -1,0 +1,40 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-O0",
+      "-g",
+      "-I../include",
+      "-I/opt/ibm/ILOG/CPLEX_Studio201/cplex/include",
+      "-I/opt/ibm/ILOG/CPLEX_Studio201/concert/include",
+      "-I/usr/include/eigen3",
+      "-c",
+      "main.cc",
+      "-o",
+      "main.o"
+    ],
+    "directory": "/home/lugot/documents/university/master/thesis/code/src",
+    "file": "/home/lugot/documents/university/master/thesis/code/src/main.cc",
+    "output": "/home/lugot/documents/university/master/thesis/code/src/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-O0",
+      "-g",
+      "-I../include",
+      "-I/opt/ibm/ILOG/CPLEX_Studio201/cplex/include",
+      "-I/opt/ibm/ILOG/CPLEX_Studio201/concert/include",
+      "-I/usr/include/eigen3",
+      "-c",
+      "parsers.cc",
+      "-o",
+      "parsers.o"
+    ],
+    "directory": "/home/lugot/documents/university/master/thesis/code/src",
+    "file": "/home/lugot/documents/university/master/thesis/code/src/parsers.cc",
+    "output": "/home/lugot/documents/university/master/thesis/code/src/parsers.o"
+  }
+]
