@@ -1,21 +1,18 @@
-#include "utils.h"
+#include "../include/utils.h"
 
-using namespace std;
-using namespace Eigen;
-
-template<class T>
-const ostream& operator<<(ostream& os, const Triplet<T>& t) {
-    os << "pos: (" << t.row() << ". " << t.col() << ") value: " << t.value() << endl;
+template <class T>
+const std::ostream& operator<<(std::ostream& os, const Eigen::Triplet<T>& t) {
+    os << "pos: (" << t.row() << ". " << t.col() << ") value: " << t.value()
+       << std::endl;
     return os;
 }
 
-vector<string> split(string line) {
+std::vector<std::string> split(std::string line) {
+    std::stringstream ss(line);
+    std::vector<std::string> tokenized_line;
+    std::string token;
 
-      stringstream ss(line);
-      vector<string> tokenized_line;
-      string token;
+    while (ss >> token) tokenized_line.push_back(token);
 
-      while (ss >> token) tokenized_line.push_back(token);
-
-      return tokenized_line;
+    return tokenized_line;
 }

@@ -1,25 +1,30 @@
-#include "globals.h"
-#include "parsers.h"
-#include "solvers.h"
-
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 
-using namespace std;
+#include "../include/cplex_instance.h"
+#include "../include/globals.h"
 
 int main() {
+    // TODO(lugot): IMPLEMENT better C++ getopt
+    //
+    // CplexInstance lp;
+    // std::cout << lp.isSolved() << std::endl;
 
-    lp model;
-    model.importModel("prod.lp");
-    //cplex_opt(model);
+    std::string model_name = "prod.lp";
+    // lp.importModel(model_name);
+    //
+    CplexInstance lp(model_name);
+    lp.solve();
+    lp.printStatus();
 
-    int n = model.getA().cols();
-    int m = model.getA().rows();
+    CplexInstance::Status s = lp.getStatus();
 
-    cout << model.getA() << endl << n << " " << m << endl;
+    CplexInstance other(lp);
+    other.solve();
+    std::cout << other.getStatus() << std::endl;
 
-    model.solveSimplex();
-    model.solveSubgradient();
+    std::cout << s << std::endl;
 
     return EXIT_SUCCESS;
 }

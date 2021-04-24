@@ -1,0 +1,58 @@
+#ifndef INCLUDE_CPLEX_INSTANCE_H_
+#define INCLUDE_CPLEX_INSTANCE_H_
+
+#include <string>
+
+#include "Eigen/Sparse"
+#include "ilconcert/iloenv.h"
+#include "ilcplex/ilocplexi.h"
+
+/*
+ * Just a wrapper.
+ */
+class CplexInstance {
+   public:
+    CplexInstance();
+    // TODO(lugot): LEARN explicit constructors
+    explicit CplexInstance(const std::string& model_name);
+
+    // TODO(lugot): LEARN const
+    void importModel(const std::string& model_name);
+    bool solve();
+    bool isSolved();
+    bool getStatus();
+    void printStatus();
+
+    // TODO(lugot): PERFORMANCE pointers? cool pointers?
+    Eigen::SparseMatrix<double>& emitA();
+    Eigen::SparseMatrix<double>& emitb();
+    Eigen::SparseMatrix<double>& emitc();
+
+    // wrapper of IloAlgorithm::Status
+    enum class Status {
+        Unknown,
+        Feasible,
+        Optimal,
+        Infeasible,
+        Unbounded,
+        InfeasibleOrUnbounded,
+        Error,
+        EmptyInstance,
+        NeverSolved,
+        ModelChanged,
+    };
+    // TODO(lugot): LEARN friend
+    friend std::ostream& operator<<(std::ostream& os, const Status& s);
+
+   private:
+    IloEnv env;
+    IloModel model;
+    IloObjective obj;
+    IloNumVarArray var;
+    IloRangeArray rng;
+    IloCplex cplex;
+
+    Status status;
+};
+
+#endif  // INCLUDE_CPLEX_INSTANCE_H_
