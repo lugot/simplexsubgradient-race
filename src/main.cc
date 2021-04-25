@@ -4,6 +4,7 @@
 
 #include "../include/cplex_instance.h"
 #include "../include/globals.h"
+#include "subgradient_instance.h"
 
 int main() {
     // TODO(lugot): IMPLEMENT better C++ getopt
@@ -13,18 +14,18 @@ int main() {
 
     std::string model_name = "prod.lp";
     // lp.importModel(model_name);
-    //
     CplexInstance lp(model_name);
+    CplexInstance qp(lp);
+    std::cout << "lp instance status: " << lp.getStatus() << std::endl;
     lp.solve();
-    lp.printStatus();
+    lp.getStatus();
 
-    CplexInstance::Status s = lp.getStatus();
+    std::cout << "qp instance status: " << qp.getStatus() << std::endl;
+    qp.solve();
+    qp.getStatus();
 
-    CplexInstance other(lp);
-    other.solve();
-    std::cout << other.getStatus() << std::endl;
-
-    std::cout << s << std::endl;
+    SubgradientInstance slp(lp);
+    slp.solve();
 
     return EXIT_SUCCESS;
 }

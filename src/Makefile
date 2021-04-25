@@ -5,7 +5,7 @@ AR = ar rc
 TARGET = thesis
 all: $(TARGET)
 
-OBJS = main.o cplex_instance.o
+OBJS = main.o cplex_instance.o subgradient_instance.o globals.o instance.o
 HEADERS =
 
 CPLEX_HOME = /opt/ibm/ILOG/CPLEX_Studio201

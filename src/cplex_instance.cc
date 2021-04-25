@@ -3,9 +3,9 @@
 #include "../include/globals.h"
 #include "ilcplex/ilocplex.h"
 
-CplexInstance::CplexInstance() { status = CplexInstance::Status::NeverSolved; }
+CplexInstance::CplexInstance() : Instance() {}
 
-CplexInstance::CplexInstance(const std::string& model_name) : CplexInstance() {
+CplexInstance::CplexInstance(const std::string& model_name) : Instance() {
     // do nothing
     importModel(model_name);
 }
@@ -13,7 +13,7 @@ CplexInstance::CplexInstance(const std::string& model_name) : CplexInstance() {
 CplexInstance::CplexInstance(const CplexInstance& other) {
     status = other.status;
 
-    if (status != CplexInstance::Status::EmptyInstance) {
+    if (status != SolutionStatus::EmptyInstance) {
         // clone all the CPLEX things, everything can be extracteb my the model
         // I guess but let's hard clone everything
         // still dont know if exists a better way to do this
@@ -24,7 +24,7 @@ CplexInstance::CplexInstance(const CplexInstance& other) {
         var = IloNumVarArray(env);
         for (int i = 0; i < other.var.getSize(); ++i) {
             IloNum lb = other.var[i].getLB();
-            IloNum ub = other.var[i].getLB();
+            IloNum ub = other.var[i].getUB();
             std::string varname = other.var[i].getName();
 
             var.add(IloNumVar(env, lb, ub, varname.c_str()));
@@ -32,10 +32,16 @@ CplexInstance::CplexInstance(const CplexInstance& other) {
 
         rng = IloRangeArray(env);
         for (int i = 0; i < other.rng.getSize(); ++i) {
-            rng.add(IloRange(env, other.rng[i].getExpr()));
+            IloNum lb = other.rng[i].getLB();
+            IloNum ub = other.rng[i].getUB();
+            IloExpr expr = other.rng[i].getExpr();
+            std::string conname = other.var[i].getName();
+
+            rng.add(IloRange(env, lb, expr, ub, conname.c_str()));
         }
 
-        obj = IloObjective(env, other.obj.getExpr());
+        obj = IloObjective(env, other.obj.getExpr(), other.obj.getSense(),
+                           other.obj.getName());
 
         cplex = IloCplex(model);
     }
@@ -76,65 +82,41 @@ bool CplexInstance::solve() {
     }
 
     // set internal status (cool conversion due to order)
-    status = static_cast<Status>(cplex.getStatus());
+    status = static_cast<SolutionStatus>(cplex.getStatus());
 
     return run_status;
 }
 
-CplexInstance::Status CplexInstance::getStatus() { return status; }
-
-void CplexInstance::printStatus() {
-    IloNumArray vals(env);
-
-    env.out() << "Solution status = " << cplex.getStatus() << std::endl;
-    env.out() << "Solution value  = " << cplex.getObjValue() << std::endl;
-
-    // TODO(lugot): do it better
-    cplex.getValues(vals, var);
-    env.out() << "Values        = " << vals << std::endl;
-    cplex.getSlacks(vals, rng);
-    env.out() << "Slacks        = " << vals << std::endl;
-    cplex.getDuals(vals, rng);
-    env.out() << "Duals         = " << vals << std::endl;
-    cplex.getReducedCosts(vals, var);
-    env.out() << "Reduced Costs = " << vals << std::endl;
-}
-
-bool CplexInstance::isSolved() {
-    return status == Status::Feasible || status == Status::Optimal ||
-           status == Status::Infeasible || status == Status::Unbounded ||
-           status == Status::InfeasibleOrUnbounded;
-}
-
 CanonicalForm CplexInstance::getCanonicalForm() {
-    int n = cplex.getNcols();
-    int m = cplex.getNrows();
+    // TODO(lugot): UNDERSTAND why cplex obj here has n=0, m=0
+    int n = var.getSize();
+    int m = rng.getSize();
 
     // add one rows for each equality constraint
     for (int i = 0; i < rng.getSize(); ++i) {
         if (rng[i].getLB() == rng[i].getUB()) m++;
     }
 
-    Eigen::SparseMatrix<double>* A = new Eigen::SparseMatrix<double>(m, n);
-    Eigen::SparseVector<double>* b = new Eigen::SparseVector<double>(m);
-    Eigen::SparseVector<double>* c = new Eigen::SparseVector<double>(n);
-    Eigen::SparseVector<double>* lb = new Eigen::SparseVector<double>(n);
-    Eigen::SparseVector<double>* ub = new Eigen::SparseVector<double>(n);
+    Eigen::SparseMatrix<double> A = Eigen::SparseMatrix<double>(m, n);
+    Eigen::SparseVector<double> b = Eigen::SparseVector<double>(m);
+    Eigen::SparseVector<double> c = Eigen::SparseVector<double>(n);
+    Eigen::SparseVector<double> lb = Eigen::SparseVector<double>(n);
+    Eigen::SparseVector<double> ub = Eigen::SparseVector<double>(n);
 
     // fill the objective. The names of variables are tracked down
     std::map<std::string, int> var_indexer;  // Variable To Column
     // TODO(lugot): abort if the problem is not LP
     for (IloExpr::LinearIterator it = obj.getLinearIterator(); it.ok(); ++it) {
         std::string varname = it.getVar().getName();
-        if (var_indexer[varname] == 0)
+        if (var_indexer.find(varname) == var_indexer.end())
             var_indexer[varname] = var_indexer.size();
 
-        c->coeffRef(var_indexer[varname]) = it.getCoef();
+        c.coeffRef(var_indexer[varname]) = it.getCoef();
     }
 
     // fill the constraints using triplets for speedup TODO(lugot) VERIFY
     std::vector<Eigen::Triplet<double>> triplets;
-    int row;
+    int row = 0;
     for (int i = 0; i < rng.getSize(); i++) {
         IloRange& r = rng[i];
 
@@ -143,7 +125,7 @@ CanonicalForm CplexInstance::getCanonicalForm() {
         for (IloExpr::LinearIterator it = r.getLinearIterator(); it.ok();
              ++it) {
             std::string varname = it.getVar().getName();
-            if (var_indexer[varname] == 0)
+            if (var_indexer.find(varname) == var_indexer.end())
                 var_indexer[varname] = var_indexer.size();
 
             constraint.push_back(Eigen::Triplet<double>(
@@ -152,7 +134,7 @@ CanonicalForm CplexInstance::getCanonicalForm() {
 
         // add the constaint to the general triplets
         triplets.insert(triplets.end(), constraint.begin(), constraint.end());
-        if (r.getUB() != 0.0) b->coeffRef(row) = r.getUB();
+        if (r.getUB() != 0.0) b.coeffRef(row) = r.getUB();
         row++;
 
         // check for equality constraint
@@ -165,36 +147,20 @@ CanonicalForm CplexInstance::getCanonicalForm() {
             // add the new row
             triplets.insert(triplets.end(), constraint.begin(),
                             constraint.end());
-            if (r.getUB() != 0.0) b->coeffRef(row) = r.getUB();
+            if (r.getUB() != 0.0) b.coeffRef(row) = r.getUB();
             row++;
         }
     }
+    A.setFromTriplets(triplets.begin(), triplets.end());
 
     // fill the LBs and UBs
     for (int i = 0; i < var.getSize(); ++i) {
-        if (var[i].getLB() != 0.0) lb->coeffRef(i) = var[i].getLB();
-        if (var[i].getUB() != 0.0) ub->coeffRef(i) = var[i].getUB();
+        // lb: nonzero element are actyally zero
+        if (var[i].getLB() != 0.0) lb.coeffRef(i) = var[i].getLB();
+        // ub: nozero element are inf: skip those checks
+        if (var[i].getUB() != IloInfinity) ub.coeffRef(i) = var[i].getUB();
     }
 
+    // TODO(lugot): CHECK for copy elision
     return {A, b, c, lb, ub};
-}
-
-std::ostream& operator<<(std::ostream& os, const CplexInstance::Status& s) {
-    switch (s) {
-        case CplexInstance::Status::EmptyInstance:
-            os << "EmptyInstance";
-            break;
-        case CplexInstance::Status::NeverSolved:
-            os << "NeverSolved";
-            break;
-        case CplexInstance::Status::ModelChanged:
-            os << "ModelChanged";
-            break;
-        default:
-            // get back to IloAlgorithm::Status << overloaded operator
-            os << static_cast<IloAlgorithm::Status>(s);
-            break;
-    }
-
-    return os;
 }
