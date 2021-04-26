@@ -1,0 +1,28 @@
+idee:
+- non proiettare affatto sperando di essere ancora feasible:
+    - check tempo check projection vs projection
+- non proiettare affatto w/ log barrier
+- step size matters
+
+tocheck:
+- simplesso esteso per qp??
+- cplex usa barrier o simplesso exteso per qp
+- active set
+- a sto punto anche interior point
+- Douglas-Rachford splitting algorithm on the dual
+- Alternating projection algorithm
+- iterativo ad hoc da paper
+- 
+
+toread:
+- PROJECTION ONTO A POLYHEDRON THAT EXPLOITS SPARSITY, WILLIAM W. HAGER† AND HONGCHAO ZHANG
+- per parall / multithread: Gradient descent procedure for solving linear programming relaxations of combinatorial optimization problems in parallel mode on extra large scale
+- 96 F i n d i n gt h eAnP r o j e c t i o n on a P o l y t o p e : Iterative MethodB. LLANAS AND C . M O R E N O
+- 99 Ye in s16-l Approximating quadratic programming with bound and quadratic constraints
+- 18 The polyhedral projection problem
+- 00 The volume algorithm: producing primal solutions with a subgradient method
+
+
+
+da implementare:
+...

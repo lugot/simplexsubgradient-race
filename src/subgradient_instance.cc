@@ -1,6 +1,7 @@
 #include "../include/subgradient_instance.h"
 
 #include "../include/globals.h"
+#include "../include/utils.h"
 
 SubgradientInstance::SubgradientInstance(CplexInstance& cinst) : Instance() {
     std::tie(A, b, c, lb, ub) = cinst.getCanonicalForm();
@@ -18,50 +19,74 @@ SubgradientInstance::SubgradientInstance(CplexInstance& cinst) : Instance() {
 
 void SubgradientInstance::solve() {
     Eigen::SparseVector<double> x(n);
+    for (int i = 0; i < n; i++) x.coeffRef(i) = 1.0;
     bool feasible = isFeasible(x);
 
-    std::cout << feasible << std::endl;
+    std::cout << feasible << " " << iter_status << " " << violated_idx
+              << std::endl;
+
+    std::cout << "HERE" << std::endl;
+    qp.updateObjective(x);
+    qp.solve();
 }
 
 bool SubgradientInstance::isFeasible(Eigen::SparseVector<double>& x) {
     assert(x.rows() == n);
+    // TODO(lugot): TEST
+    // TODO(lugot): ORDER of checks for performance improvement
+    // TODO(lugot): ADD subfunctions to avoid projections
+    // .. maybe do the check is slower than perform projection on variables?
 
-    // check for constraints: merge-like code structure for constraint
-    // O( nnz(lhs) + nnz(b) ) = O ( 2m )
-    // anyway, nnz(b) should ~ m
+    // check for constraints
     Eigen::SparseVector<double> lhs = A * x;
-    std::cout << x << " " << lhs << " " << b << std::endl;
+    lhs.prune(EPS);  // TODO(lugot): CHECK if is worth it
+    
+    std::cout << lhs << "\n" << b << std::endl;
 
-    Eigen::SparseVector<double>::InnerIterator itl(lhs);
-    Eigen::SparseVector<double>::InnerIterator itb(b);
-    while (itl && itb) {
-        if (itl.index() < itb.index()) {
-            // since itb.index is zero
-            // TODO(lugot): CHECK floating point safety
-            if (itl.value() < -EPS) return false;
-            ++itl;
-        } else if (itl.index() > itb.index()) {
-            // since itl.index is zero
-            if (itb.value() > EPS) return false;
-            ++itb;
-        } else {  // itl.index() == itb.index()
-            // itl.value() > itb.value() -> infeasible
-            if (fabs(itb.value() - itl.value()) < EPS) return false;
-            ++itl;
-            ++itb;
-        }
+    if ((violated_idx = sparseVectorCompareZero(lhs, b)) != m) {
+        // TODO(lugot): UNK track index?
+        iter_status = IterationStatus::ConstraintViolated;
+        return false;
     }
-    while (itl) {
-        // since itb.index is zero
-        // TODO(lugot): CHECK floating point safety
-        if (itl.value() < -EPS) return false;
-        ++itl;
-    }
-    while (itb) {
-        // since itl.index is zero
-        if (itb.value() > EPS) return false;
-        ++itb;
+    lhs.finalize();
+
+    // check for variables lower bounds
+    if ((violated_idx = sparseVectorCompareZero(lb, x)) != m) {
+        // TODO(lugot): UNK track index?
+        iter_status = IterationStatus::LowerBoundViolated;
+        return false;
     }
 
+    // check for variables upper ounds
+    if ((violated_idx = sparseVectorCompareZero(lb, x)) != m) {
+        // TODO(lugot): UNK track index?
+        iter_status = IterationStatus::LowerBoundViolated;
+        return false;
+    }
+
+    iter_status = IterationStatus::Feasible;
     return true;
+}
+
+std::ostream& operator<<(std::ostream& os,
+                         const SubgradientInstance::IterationStatus& s) {
+    switch (s) {
+        case SubgradientInstance::IterationStatus::Unknown:
+            os << "Unknownk";
+            break;
+        case SubgradientInstance::IterationStatus::ConstraintViolated:
+            os << "ConstraintViolated";
+            break;
+        case SubgradientInstance::IterationStatus::LowerBoundViolated:
+            os << "LowerBoundViolated";
+            break;
+        case SubgradientInstance::IterationStatus::UpperBoundViolated:
+            os << "UpperBoundViolated";
+            break;
+        case SubgradientInstance::IterationStatus::Feasible:
+            os << "Feasible";
+            break;
+    }
+
+    return os;
 }

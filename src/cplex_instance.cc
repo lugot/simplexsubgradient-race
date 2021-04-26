@@ -72,19 +72,60 @@ void CplexInstance::importModel(const std::string& model_name) {
 }
 
 bool CplexInstance::solve() {
-    // TODO(lugot): check for status
+    // TODO(lugot): CHECK for status
     bool run_status;
 
     try {
+        std::cout << obj.getExpr() << std::endl;
+
         run_status = static_cast<bool>(cplex.solve());
+
+        // set internal status (cool conversion due to order)
+        status = static_cast<SolutionStatus>(cplex.getStatus());
+
+        // TODO(lugot): EXTRACT in a function
+        IloNumArray vals(env);
+        env.out() << "Solution status = " << cplex.getStatus() << std::endl;
+        env.out() << "Solution value  = " << cplex.getObjValue() << std::endl;
+        cplex.getValues(vals, var);
+        env.out() << "Values        = " << vals << std::endl;
+        cplex.getSlacks(vals, rng);
+        env.out() << "Slacks        = " << vals << std::endl;
+        cplex.getDuals(vals, rng);
+        env.out() << "Duals         = " << vals << std::endl;
+        cplex.getReducedCosts(vals, var);
+        env.out() << "Reduced Costs = " << vals << std::endl;
     } catch (IloException& e) {
         std::cerr << "Concert exception caught: " << e << std::endl;
     }
 
-    // set internal status (cool conversion due to order)
-    status = static_cast<SolutionStatus>(cplex.getStatus());
-
     return run_status;
+}
+
+void CplexInstance::updateObjective(const Eigen::SparseVector<double>& x) {
+    assert(x.rows() == var.getSize());
+
+    //model.remove(obj);
+    obj.end();
+
+
+    IloExpr qexpr = IloExpr(env);
+
+    // TODO(lugot): PERFORMANCE check other qp entering
+    for (int i = 0; i < var.getSize(); ++i) {
+        qexpr += 0.5 * var[i] * var[i];
+    }
+    for (Eigen::SparseVector<double>::InnerIterator it(x); it; ++it) {
+        qexpr += -it.value() * var[it.index()];
+        qexpr += 0.5 * it.value() * it.value();
+    }
+
+    obj = IloObjective(env, qexpr);
+    // obj.setExpr(qexpr);
+    model.add(obj);
+    model.add(var);
+    model.add(rng);
+    std::cout << "model: " << model << std::endl;
 }
 
 CanonicalForm CplexInstance::getCanonicalForm() {
@@ -161,6 +202,6 @@ CanonicalForm CplexInstance::getCanonicalForm() {
         if (var[i].getUB() != IloInfinity) ub.coeffRef(i) = var[i].getUB();
     }
 
-    // TODO(lugot): CHECK for copy elision
+    // TODO(lugot): UNDERSTAND copy elision and return value optimization
     return {A, b, c, lb, ub};
 }

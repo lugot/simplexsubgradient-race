@@ -17,12 +17,12 @@ int main() {
     CplexInstance lp(model_name);
     CplexInstance qp(lp);
     std::cout << "lp instance status: " << lp.getStatus() << std::endl;
-    lp.solve();
-    lp.getStatus();
+    //lp.solve();
+    //lp.getStatus();
 
     std::cout << "qp instance status: " << qp.getStatus() << std::endl;
     qp.solve();
-    qp.getStatus();
+    //qp.getStatus();
 
     SubgradientInstance slp(lp);
     slp.solve();

@@ -27,7 +27,7 @@ class CplexInstance : public Instance {
     // TODO(lugot): LEARN const
     void importModel(const std::string& model_name);
     bool solve();
-    void printStatus();
+    void updateObjective(const Eigen::SparseVector<double>& x);
 
     CanonicalForm getCanonicalForm();
 

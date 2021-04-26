@@ -7,13 +7,14 @@
 
 class SubgradientInstance : public Instance {
    public:
-    SubgradientInstance(CplexInstance& cinst);
+    explicit SubgradientInstance(CplexInstance& cinst);
     void solve();
 
     enum class IterationStatus {
         Unknown,
-        ConstraintsInfeasible,
-        VariableBOundsInfeasible,
+        ConstraintViolated,
+        LowerBoundViolated,
+        UpperBoundViolated,
         Feasible
     };
 
@@ -28,9 +29,12 @@ class SubgradientInstance : public Instance {
     CplexInstance qp;
 
     IterationStatus iter_status;
+    int violated_idx;
 
     Eigen::SparseVector<double> xstar;
     bool isFeasible(Eigen::SparseVector<double>& x);
 };
+
+std::ostream& operator<<(std::ostream& os, const SubgradientInstance::IterationStatus & s);
 
 #endif  // INCLUDE_SUBGRADIENT_INSTANCE_H_

@@ -28,7 +28,6 @@ class Instance {
     SolutionStatus status;
 };
 
-// TODO(lugot): LEARN friend
 std::ostream& operator<<(std::ostream& os, const Instance::SolutionStatus& s);
 
 #endif  // INCLUDE_INSTANCE_H_
