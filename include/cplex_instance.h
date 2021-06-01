@@ -4,41 +4,27 @@
 #include <string>
 
 #include "../include/instance.h"
-#include "Eigen/Sparse"
 #include "ilconcert/iloenv.h"
 #include "ilcplex/ilocplexi.h"
-//#include "ilconcert/iloenv.h"
-//#include "ilcplex/ilocplexi.h"
 
-typedef std::tuple<Eigen::SparseMatrix<double>, Eigen::SparseVector<double>,
-                   Eigen::SparseVector<double>, Eigen::SparseVector<double>,
-                   Eigen::SparseVector<double>>
-    CanonicalForm;
-
-/*
- * Just a wrapper.
- */
 class CplexInstance : public Instance {
    public:
     CplexInstance();
     explicit CplexInstance(const std::string& model_name);
     CplexInstance(const CplexInstance& other);
+    ~CplexInstance();
 
-    // TODO(lugot): LEARN const
-    void importModel(const std::string& model_name);
+    void importModel(const std::string& filename);
     bool solve();
-    void updateObjective(const Eigen::SparseVector<double>& x);
 
-    CanonicalForm getCanonicalForm();
-
-   private:
-    // TODO(lugot): LEARN better understand handler thinghy
     IloEnv env;
     IloModel model;
     IloObjective obj;
     IloNumVarArray var;
     IloRangeArray rng;
     IloCplex cplex;
+
+    std::string model_name;
 };
 
 #endif  // INCLUDE_CPLEX_INSTANCE_H_

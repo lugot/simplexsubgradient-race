@@ -5,15 +5,13 @@ AR = ar rc
 TARGET = thesis
 all: $(TARGET)
 
-OBJS = main.o globals.o utils.o instance.o cplex_instance.o subgradient_instance.o 
+OBJS = main.o utils.o instance.o cplex_instance.o subgradient_instance.o sparse_matrix.o sparse_vector.o
 HEADERS =
 
 CPLEX_HOME = /opt/ibm/ILOG/CPLEX_Studio201
 LIBS = -L${CPLEX_HOME}/cplex/lib/x86-64_linux/static_pic -L${CPLEX_HOME}/concert/lib/x86-64_linux/static_pic -L. -lilocplex -lconcert -lcplex -lm -lpthread -ldl
 
-EIGEN_HOME = /usr/include/eigen3
-
-INC = -I../include -I${CPLEX_HOME}/cplex/include -I${CPLEX_HOME}/concert/include -I${EIGEN_HOME}
+INC = -I../include -I${CPLEX_HOME}/cplex/include -I${CPLEX_HOME}/concert/include
 
 
 .SUFFIXES:
@@ -36,10 +34,8 @@ $(LIBUTILS): $(OBJS_LIBUTILS)
 $(LIBUTILS) : $(HEADERS_LIBUTILS)
 
 clean:
-	#$(RM) $(OBJS)
-	#$(RM) $(OBJS_LIBUTILS)
-	#$(RM) $(LIBUTILS)
-	#$(RM) $(TARGET)
+	rm -rf *.o
+	rm thesis
 
 again:
 	make clean

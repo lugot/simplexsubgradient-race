@@ -1,5 +1,5 @@
-#ifndef _UTILS_H_
-#define _UTILS_H_
+#ifndef INCLUDE_UTILS_H_
+#define INCLUDE_UTILS_H_
 
 #include <Eigen/Sparse>
 
@@ -24,4 +24,4 @@ int sparseVectorCompareZero(const Eigen::SparseVector<double>& l,
 int sparseVectorCompareInf(const Eigen::SparseVector<double>& l,
                            const Eigen::SparseVector<double>& r);
 
-#endif /* _UTILS_H_ */
+#endif /* INCLUDE_UTILS_H_ */

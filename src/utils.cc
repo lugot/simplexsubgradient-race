@@ -14,15 +14,15 @@ int sparseVectorCompareZero(const Eigen::SparseVector<double>& l,
         if (itl.index() < itr.index()) {
             // since itr.index is zero
             // TODO(lugot): CHECK floating point safety
-            if (-itl.value() < EPS) return itl.index();
+            if (-itl.value() < EPSILON) return itl.index();
             ++itl;
         } else if (itl.index() > itr.index()) {
             // since itl.index is zero
-            if (itr.value() < EPS) return itr.index();
+            if (itr.value() < EPSILON) return itr.index();
             ++itr;
         } else {  // itl.index() == itb.index()
             // itl.value() > itr.value() -> infeasible
-            if (itr.value() - itl.value() < EPS) return itl.index();
+            if (itr.value() - itl.value() < EPSILON) return itl.index();
             ++itl;
             ++itr;
         }
@@ -30,12 +30,12 @@ int sparseVectorCompareZero(const Eigen::SparseVector<double>& l,
     while (itl) {
         // since itb.index is zero
         // TODO(lugot): CHECK floating point safety
-        if (-itl.value() < EPS) return itl.index();
+        if (-itl.value() < EPSILON) return itl.index();
         ++itl;
     }
     while (itr) {
         // since itl.index is zero
-        if (itr.value() < EPS) return itr.index();
+        if (itr.value() < EPSILON) return itr.index();
         ++itr;
     }
 
@@ -56,11 +56,11 @@ int sparseVectorCompareInf(const Eigen::SparseVector<double>& l,
             ++itl;
         } else if (itl.index() > itr.index()) {
             // since itl.index is zero
-            if (itr.value() < EPS) return itr.index();
+            if (itr.value() < EPSILON) return itr.index();
             ++itr;
         } else {  // itl.index() == itb.index()
             // itl.value() > itr.value() -> infeasible
-            if (itr.value() - itl.value() < EPS) return itl.index();
+            if (itr.value() - itl.value() < EPSILON) return itl.index();
             ++itl;
             ++itr;
         }
@@ -71,7 +71,7 @@ int sparseVectorCompareInf(const Eigen::SparseVector<double>& l,
     // }
     while (itr) {
         // since itl.index is zero
-        if (itr.value() < EPS) return itr.index();
+        if (itr.value() < EPSILON) return itr.index();
         ++itr;
     }
 

@@ -1,0 +1,21 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Wall",
+      "-O0",
+      "-g",
+      "-I../include",
+      "-I/opt/ibm/ILOG/CPLEX_Studio201/cplex/include",
+      "-I/opt/ibm/ILOG/CPLEX_Studio201/concert/include",
+      "-I/usr/include/eigen3",
+      "-c",
+      "parser.cc",
+      "-o",
+      "parser.o"
+    ],
+    "directory": "/home/lugot/documents/university/master/thesis/code/src",
+    "file": "/home/lugot/documents/university/master/thesis/code/src/parser.cc",
+    "output": "/home/lugot/documents/university/master/thesis/code/src/parser.o"
+  }
+]
