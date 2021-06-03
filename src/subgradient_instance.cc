@@ -1,9 +1,10 @@
 #include "../include/subgradient_instance.h"
 
+#include <algorithm>
 #include <iomanip>
 
 #include "../include/globals.h"
-#include "../include/utils.h"
+#include "../include/logger.h"
 
 SubgradientInstance::SubgradientInstance(const CplexInstance& cinst) {
     // model sizes
@@ -86,25 +87,37 @@ SubgradientInstance::SubgradientInstance(const CplexInstance& cinst) {
     // retreive best optimal solution if avaiable
     std::ifstream optvectors("../subgradient_solutions/" + model_name);
     if (optvectors.is_open()) {
-        double nnz;
+        int nnz;
+        int size;
+        std::string token;
 
-        optvectors >> nnz;
+        // scan ustar
+        optvectors >> token;
+        std::sscanf(token.c_str(), "%d(%d)", &size, &nnz);
+
+        assert(m == size);
         best_ustar = SparseVector(m);
         while (nnz--) {
+            optvectors >> token;
             int pos;
             double val;
-            optvectors >> pos >> val;
 
+            std::sscanf(token.c_str(), "(%d,%lf)", &pos, &val);
             best_ustar.push_back({pos, val});
         }
 
-        optvectors >> nnz;
+        // scan xstar
+        optvectors >> token;
+        std::sscanf(token.c_str(), "%d(%d)", &size, &nnz);
+
+        assert(n == size);
         best_xstar = SparseVector(n);
         while (nnz--) {
+            optvectors >> token;
             int pos;
             double val;
-            optvectors >> pos >> val;
 
+            std::sscanf(token.c_str(), "(%d,%lf)", &pos, &val);
             best_xstar.push_back({pos, val});
         }
 
@@ -118,9 +131,9 @@ SubgradientInstance::SubgradientInstance(const CplexInstance& cinst) {
 SubgradientInstance::Status SubgradientInstance::solve(Methods method) {
     if (EXTRA) {
         std::cout << "\n\nSolving on model (Ax >= b formulation)" << std::endl;
-        std::cout << "A " << A;
-        std::cout << "b " << b;
-        std::cout << "c " << c;
+        std::cout << "A " << A << std::endl;
+        std::cout << "b " << b << std::endl;
+        std::cout << "c " << c << std::endl;
         std::cout << "\n\n";
     }
 
@@ -188,9 +201,20 @@ SubgradientInstance::Status SubgradientInstance::solvePure() {
     std::vector<double> dual_objectives(P);
     int soft_lambda_lifespan = 0;
 
+    // compute UB for primal
+    double primal_objective_UB = 0.0;
+    std::vector<std::pair<int, double>>::iterator itc;
+    for (itc = c.data.begin(); itc != c.data.end(); ++itc) {
+        if (itc->second < 0.0) {  // hope c is float safe
+            primal_objective_UB += lb[itc->first] * itc->second;
+        } else {
+            primal_objective_UB += ub[itc->first] * itc->second;
+        }
+    }
+
     status = Status::NeverSolved;
     int k;
-    for (k = 0; k < MAX_ITERATIONS; k++) {
+    for (k = 0; k < MAX_ITERATIONS; ++k) {
         // compute n vector c - uT A
         SparseVector temp = c;
         temp -= u * A;
@@ -205,7 +229,7 @@ SubgradientInstance::Status SubgradientInstance::solvePure() {
                 ++i;
             }
 
-            if (it->second < EPSILON) {
+            if (it->second < EPS) {
                 x.push_back({i, ub[i]});
             } else {
                 // set to LB also if it->second is 0
@@ -228,17 +252,21 @@ SubgradientInstance::Status SubgradientInstance::solvePure() {
 
         // track the iteration status
         if (TRACKING) {
-            std::cout << 'P' << " " << k << " " << dual_objective << " "
+            if (bestsol_avaiable)
+                std::cout << "P*" << DELIM;
+            else
+                std::cout << "P" << DELIM;
+            std::cout << k << DELIM << dual_objective << DELIM
                       << primal_objective;
             if (bestsol_avaiable) {
-                std::cout << " " << SparseVector::dist(u, ustar);
+                std::cout << DELIM << SparseVector::dist(u, best_ustar);
             }
-            std::cout << " " << lambda << std::endl;
+            std::cout << DELIM << lambda << std::endl;
         }
         if (EXTRA) {
-            std::cout << "u: " << u << std::endl;
-            std::cout << "s: " << s << std::endl;
             std::cout << "x: " << x << std::endl;
+            std::cout << "s: " << s << std::endl;
+            std::cout << "u: " << u << std::endl;
         }
 
         // optimality check
@@ -248,7 +276,7 @@ SubgradientInstance::Status SubgradientInstance::solvePure() {
             fstar = primal_objective;
             phistar = dual_objective;
 
-            if ((gap = fabs(ustar * s)) < EPSILON) {
+            if ((gap = fabs(ustar * s)) < EPS) {
                 return Status::Optimal;
             } else {
                 return Status::EpsilonOptimal;
@@ -263,15 +291,16 @@ SubgradientInstance::Status SubgradientInstance::solvePure() {
             double phimax = *std::max_element(dual_objectives.begin(),
                                               dual_objectives.end());
 
-            if (phimax - 1.01 * phimin > -EPSILON) {
+            if (phimax - 1.01 * phimin > -EPS) {
                 // phimax - phimin > 0.01 * phimin
-                mu = 0.5 * mu;
-            } else if (phimax - 1.001 * phimin < EPSILON) {
+                mu = std::max(0.001, 0.5 * mu);
+            } else if (phimax - 1.001 * phimin < EPS) {
                 // phimax - phimin < 0.001 * phimin
                 mu = std::min(2.0, 1.5 * mu);
             }
         }
-        lambda = mu * (449.606 - dual_objective) / SparseVector::squaredNorm(s);
+        lambda = mu * (primal_objective_UB - dual_objective) /
+                 SparseVector::squaredNorm(s);
 
         // check if lambda is too small
         if (lambda < HARD_LAMBDA_TRESHOLD) {
@@ -290,7 +319,7 @@ SubgradientInstance::Status SubgradientInstance::solvePure() {
         // project into R^m+, by removing those elements from the sparse vector
         u.data.erase(std::remove_if(u.data.begin(), u.data.end(),
                                     [](const std::pair<int, double>& p) {
-                                        return p.second < EPSILON;
+                                        return p.second < EPS;
                                     }),
                      u.data.end());
     }
@@ -311,9 +340,20 @@ SubgradientInstance::Status SubgradientInstance::solveDeflected() {
     std::vector<double> dual_objectives(P);
     int soft_lambda_lifespan = 0;
 
+    // compute UB for primal
+    double primal_objective_UB = 0.0;
+    std::vector<std::pair<int, double>>::iterator itc;
+    for (itc = c.data.begin(); itc != c.data.end(); ++itc) {
+        if (itc->second < 0.0) {  // i hope c is float safe
+            primal_objective_UB += lb[itc->first] * itc->second;
+        } else {
+            primal_objective_UB += ub[itc->first] * itc->second;
+        }
+    }
+
     status = Status::NeverSolved;
     int k;
-    for (k = 0; k < MAX_ITERATIONS; k++) {
+    for (k = 0; k < MAX_ITERATIONS; ++k) {
         // compute n vector c - uT A
         SparseVector temp = c;
         temp -= u * A;
@@ -328,7 +368,7 @@ SubgradientInstance::Status SubgradientInstance::solveDeflected() {
                 ++i;
             }
 
-            if (it->second < EPSILON) {
+            if (it->second < EPS) {
                 x.push_back({i, ub[i]});
             } else {
                 // set to LB also if it->second is 0
@@ -346,7 +386,7 @@ SubgradientInstance::Status SubgradientInstance::solveDeflected() {
 
         double delta_selector = s * d;
         double delta;
-        if (delta_selector < EPSILON) {
+        if (delta_selector < EPS) {
             delta = -TAU * delta_selector;
 
             if (d.data.size() != 0) delta /= SparseVector::squaredNorm(d);
@@ -366,18 +406,21 @@ SubgradientInstance::Status SubgradientInstance::solveDeflected() {
 
         // track the iteration status
         if (TRACKING) {
-            std::cout << 'P' << " " << k << " " << dual_objective << " "
-                      << primal_objective;
+            if (bestsol_avaiable)
+                std::cout << "D*" << DELIM;
+            else
+                std::cout << "D" << DELIM;
+            std::cout << k << " " << dual_objective << " " << primal_objective;
             if (bestsol_avaiable) {
-                std::cout << " " << SparseVector::dist(u, ustar);
+                std::cout << " " << SparseVector::dist(u, best_ustar);
             }
             std::cout << " " << lambda << std::endl;
         }
         if (EXTRA) {
+            std::cout << "x: " << x << std::endl;
             std::cout << "u: " << u << std::endl;
             std::cout << "s: " << s << std::endl;
             std::cout << "d: " << d << std::endl;
-            std::cout << "x: " << x << std::endl;
         }
 
         // optimality check
@@ -387,7 +430,7 @@ SubgradientInstance::Status SubgradientInstance::solveDeflected() {
             fstar = primal_objective;
             phistar = dual_objective;
 
-            if ((gap = fabs(ustar * s)) < EPSILON) {
+            if ((gap = fabs(ustar * s)) < EPS) {
                 return Status::Optimal;
             } else {
                 return Status::EpsilonOptimal;
@@ -402,15 +445,16 @@ SubgradientInstance::Status SubgradientInstance::solveDeflected() {
             double phimax = *std::max_element(dual_objectives.begin(),
                                               dual_objectives.end());
 
-            if (phimax - 1.01 * phimin > -EPSILON) {
+            if (phimax - 1.01 * phimin > -EPS) {
                 // phimax - phimin > 0.01 * phimin
-                mu = 0.5 * mu;
-            } else if (phimax - 1.001 * phimin < EPSILON) {
+                mu = std::max(0.001, 0.5 * mu);
+            } else if (phimax - 1.001 * phimin < EPS) {
                 // phimax - phimin < 0.001 * phimin
                 mu = std::min(2.0, 1.5 * mu);
             }
         }
-        lambda = mu * (500 - dual_objective) / SparseVector::squaredNorm(d);
+        lambda = mu * (primal_objective_UB - dual_objective) /
+                 SparseVector::squaredNorm(d);
 
         // check if lambda is too small
         if (lambda < HARD_LAMBDA_TRESHOLD) {
@@ -429,7 +473,7 @@ SubgradientInstance::Status SubgradientInstance::solveDeflected() {
         // project into R^m+, by removing those elements from the sparse vector
         u.data.erase(std::remove_if(u.data.begin(), u.data.end(),
                                     [](const std::pair<int, double>& p) {
-                                        return p.second < EPSILON;
+                                        return p.second < EPS;
                                     }),
                      u.data.end());
     }
@@ -450,9 +494,20 @@ SubgradientInstance::Status SubgradientInstance::solveConditional() {
     std::vector<double> dual_objectives(P);
     int soft_lambda_lifespan = 0;
 
+    // compute UB for primal
+    double primal_objective_UB = 0.0;
+    std::vector<std::pair<int, double>>::iterator itc;
+    for (itc = c.data.begin(); itc != c.data.end(); ++itc) {
+        if (itc->second < 0.0) {  // i hope c is float safe
+            primal_objective_UB += lb[itc->first] * itc->second;
+        } else {
+            primal_objective_UB += ub[itc->first] * itc->second;
+        }
+    }
+
     status = Status::NeverSolved;
     int k;
-    for (k = 0; k < MAX_ITERATIONS; k++) {
+    for (k = 0; k < MAX_ITERATIONS; ++k) {
         // compute n vector c - uT A
         SparseVector temp = c;
         temp -= u * A;
@@ -467,7 +522,7 @@ SubgradientInstance::Status SubgradientInstance::solveConditional() {
                 ++i;
             }
 
-            if (it->second < EPSILON) {
+            if (it->second < EPS) {
                 x.push_back({i, ub[i]});
             } else {
                 // set to LB also if it->second is 0
@@ -487,7 +542,7 @@ SubgradientInstance::Status SubgradientInstance::solveConditional() {
         // TODO(lugot): SPEEDUP this is O(nlogn) -> O(n), n = sum(nonzeroes)
         s.data.erase(std::remove_if(s.data.begin(), s.data.end(),
                                     [&u](const std::pair<int, double>& p) {
-                                        return p.second < EPSILON &&
+                                        return p.second < EPS &&
                                                u.isZero(p.first);
                                     }),
                      s.data.end());
@@ -499,17 +554,20 @@ SubgradientInstance::Status SubgradientInstance::solveConditional() {
 
         // track the iteration status
         if (TRACKING) {
-            std::cout << 'P' << " " << k << " " << dual_objective << " "
-                      << primal_objective;
+            if (bestsol_avaiable)
+                std::cout << "C*" << DELIM;
+            else
+                std::cout << 'C' << DELIM;
+            std::cout << k << " " << dual_objective << " " << primal_objective;
             if (bestsol_avaiable) {
-                std::cout << " " << SparseVector::dist(u, ustar);
+                std::cout << " " << SparseVector::dist(u, best_ustar);
             }
             std::cout << " " << lambda << std::endl;
         }
         if (EXTRA) {
-            std::cout << "u: " << u << std::endl;
-            std::cout << "s: " << s << std::endl;
             std::cout << "x: " << x << std::endl;
+            std::cout << "s: " << s << std::endl;
+            std::cout << "u: " << u << std::endl;
         }
 
         // optimality check
@@ -519,12 +577,11 @@ SubgradientInstance::Status SubgradientInstance::solveConditional() {
             fstar = primal_objective;
             phistar = dual_objective;
 
-            if ((gap = fabs(ustar * s)) < EPSILON) {
+            if ((gap = fabs(ustar * s)) < EPS) {
                 return Status::Optimal;
             } else {
                 return Status::EpsilonOptimal;
             }
-            break;
         }
 
         // compute the step size lambda
@@ -534,15 +591,16 @@ SubgradientInstance::Status SubgradientInstance::solveConditional() {
             double phimax = *std::max_element(dual_objectives.begin(),
                                               dual_objectives.end());
 
-            if (phimax - 1.01 * phimin > -EPSILON) {
+            if (phimax - 1.01 * phimin > -EPS) {
                 // phimax - phimin > 0.01 * phimin
-                mu = 0.5 * mu;
-            } else if (phimax - 1.001 * phimin < EPSILON) {
+                mu = std::max(0.001, 0.5 * mu);
+            } else if (phimax - 1.001 * phimin < EPS) {
                 // phimax - phimin < 0.001 * phimin
                 mu = std::min(2.0, 1.5 * mu);
             }
         }
-        lambda = mu * (449.606 - dual_objective) / SparseVector::squaredNorm(s);
+        lambda = mu * (primal_objective_UB - dual_objective) /
+                 SparseVector::squaredNorm(s);
 
         // check if lambda is too small
         if (lambda < HARD_LAMBDA_TRESHOLD) {
@@ -562,7 +620,7 @@ SubgradientInstance::Status SubgradientInstance::solveConditional() {
         size_t unnz = static_cast<int>(u.data.size());
         u.data.erase(std::remove_if(u.data.begin(), u.data.end(),
                                     [](const std::pair<int, double>& p) {
-                                        return p.second < EPSILON;
+                                        return p.second < EPS;
                                     }),
                      u.data.end());
         if ((u.data.size() != unnz) && VERBOSE) {
@@ -578,6 +636,226 @@ SubgradientInstance::Status SubgradientInstance::solveConditional() {
 }
 
 SubgradientInstance::Status SubgradientInstance::solveHybrid() {
+    SparseVector u(m), s(m), stepdir(m), x(n);
+    const SparseVector zero(m);
+
+    // step size params
+    double lambda = -1.0;
+    double mu = 0.1;
+    std::vector<double> dual_objectives(P);
+    int soft_lambda_lifespan = 0;
+
+    if (LOG) {
+        Logger l;
+        std::vector<std::string> logline = {
+            "method", "k",  "infeasible_dir", "monotone",   "dual", "primal",
+            "lambda", "mu", "delta",          "lambda_life"};
+        if (bestsol_avaiable) logline.push_back({"ustar_dist"});
+
+        l.add(logline);
+        std::clog << l;
+    }
+
+    // prec dual objective is phistar at the end, just use it!
+    phistar = -INF;
+
+    // compute UB for primal
+    double primal_objective_UB = 0.0;
+    std::vector<std::pair<int, double>>::iterator itc;
+    for (itc = c.data.begin(); itc != c.data.end(); ++itc) {
+        if (itc->second < 0.0) {  // i hope c is float safe
+            primal_objective_UB += lb[itc->first] * itc->second;
+        } else {
+            primal_objective_UB += ub[itc->first] * itc->second;
+        }
+    }
+
+    status = Status::NeverSolved;
+    int k;
+    // for (k = 0; k < 30; ++k) {
+    for (k = 0; k < MAX_ITERATIONS; ++k) {
+        // compute n vector c - uT A
+        SparseVector temp = c;
+        temp -= u * A;
+
+        // check i-th component: if > 0 set LB else UB
+        x.data.clear();  // TODO(lugot): performance
+        int i = 0;
+        std::vector<std::pair<int, double>>::iterator it;
+        for (it = temp.data.begin(); it != temp.data.end(); ++it) {
+            while (i < it->first) {
+                x.push_back({i, lb[i]});
+                ++i;
+            }
+
+            if (it->second < EPS) {
+                x.push_back({i, ub[i]});
+            } else {
+                // set to LB also if it->second is 0
+                x.push_back({i, lb[i]});
+            }
+            ++i;
+        }
+        while (i < n) {
+            x.push_back({i, lb[i]});
+            ++i;
+        }
+
+        // compute the subgradient s as b - A x as well as d
+        s = b - (A * x);
+
+        // check if u in bd(omega)
+        bool subgradient_infeasible = false;
+        std::vector<std::pair<int, double>>::iterator itu, its;
+        itu = u.data.begin();
+        its = s.data.begin();
+        while (itu != u.data.end() && its != s.data.end()) {
+            if (itu->first == its->first) {
+                ++itu;
+                ++its;
+            } else if (itu->first < its->first) {
+                ++itu;
+            } else {
+                if (its->second < EPS) {
+                    // here if ui is zero and si < 0, need to condtion
+                    subgradient_infeasible = true;
+                    break;
+                }
+                ++its;
+            }
+        }
+        while (its != s.data.end()) {
+            if (its->second < EPS) {
+                // here if ui is zero and si < 0, need to condtion
+                subgradient_infeasible = true;
+                break;
+            }
+
+            ++its;
+        }
+
+        double delta = -1;
+        if (subgradient_infeasible) {
+            stepdir = s;
+            // TODO(lugot): SPEEDUP this is O(nlogn) -> O(n), n = sum(nonzeroes)
+            stepdir.data.erase(
+                std::remove_if(stepdir.data.begin(), stepdir.data.end(),
+                               [&u](const std::pair<int, double>& p) {
+                                   return p.second < EPS && u.isZero(p.first);
+                               }),
+                stepdir.data.end());
+        } else {
+            double delta_selector = s * stepdir;
+            if (delta_selector < EPS) {
+                delta = -TAU * delta_selector;
+
+                if (stepdir.data.size() != 0)
+                    delta /= SparseVector::squaredNorm(stepdir);
+
+                // d = s + d * delta;
+                stepdir *= delta;
+                stepdir += s;
+            } else {
+                delta = 0;
+                stepdir = s;
+            }
+        }
+
+        // compute objs
+        double dual_objective, primal_objective;
+        dual_objectives[k % P] = dual_objective = c * x + u * s;
+        primal_objective = c * x;
+
+        // check if theres a improvement in the dual objective, if so,
+        // track u (last one would be ustar)
+        bool monotonicity = (dual_objective - phistar > -EPS);
+        if (monotonicity) {
+            phistar = dual_objective;
+            ustar = u;
+        }
+
+        // track the iteration status
+        if (LOG) {
+            Logger l;
+            l.add(4);  // 4 -> Hybrid
+            l.add(k);
+            l.add(subgradient_infeasible);
+            l.add(monotonicity);
+            l.add(dual_objective);
+            l.add(primal_objective);
+            l.add(lambda);
+            l.add(mu);
+            l.add(delta);
+            l.add(soft_lambda_lifespan);
+            if (bestsol_avaiable) l.add(SparseVector::dist(u, best_ustar));
+
+            std::clog << l;
+        }
+        if (EXTRA) {
+            std::cout << "x: " << x << std::endl;
+            std::cout << "s: " << s << std::endl;
+            std::cout << "d: " << stepdir << std::endl;
+            std::cout << "u: " << u << std::endl;
+        }
+
+        // optimality check
+        if (stepdir == zero) return Status::Optimal;
+        if (s < zero) {
+            xstar = x;
+            ustar = u;
+            fstar = primal_objective;
+            phistar = dual_objective;
+
+            if ((gap = fabs(ustar * s)) < EPS) {
+                return Status::Optimal;
+            } else {
+                return Status::EpsilonOptimal;
+            }
+        }
+
+        // compute the step size lambda
+        if (k > P) {
+            double phimin = *std::min_element(dual_objectives.begin(),
+                                              dual_objectives.end());
+            double phimax = *std::max_element(dual_objectives.begin(),
+                                              dual_objectives.end());
+
+            if (phimax - 1.01 * phimin > -EPS) {
+                // phimax - phimin > 0.01 * phimin
+                mu = std::max(MU_MIN, 0.5 * mu);
+            } else if (phimax - 1.001 * phimin < EPS) {
+                // phimax - phimin < 0.001 * phimin
+                mu = std::min(MU_MAX, 1.5 * mu);
+            }
+        }
+        lambda = mu * (primal_objective_UB - dual_objective) /
+                 SparseVector::squaredNorm(stepdir);
+
+        // check if lambda is too small
+        if (lambda < HARD_LAMBDA_TRESHOLD) {
+            return Status::LowLambdaHard;
+        } else if (lambda < SOFT_LAMBDA_TRESHOLD) {
+            soft_lambda_lifespan++;
+            if (soft_lambda_lifespan >= SOFT_LAMBDA_MAXLIFE) {
+                return Status::LowLambdaSoft;
+            } else {
+                soft_lambda_lifespan = 0;
+            }
+        }
+
+        // update the u vector by subgradient
+        u += stepdir * lambda;
+        // project into R^m+, by removing those elements from the sparse vector
+        u.data.erase(std::remove_if(u.data.begin(), u.data.end(),
+                                    [](const std::pair<int, double>& p) {
+                                        return p.second < EPS;
+                                    }),
+                     u.data.end());
+    }
+    if (k == MAX_ITERATIONS) {
+        return Status::ReachedMaxIterations;
+    }
+
     return status;
 }
 
@@ -638,47 +916,3 @@ SubgradientInstance::Sense SubgradientInstance::constraintSense(
     // aT x <= b -> lb == inf
     return LESS;
 }
-
-// Iteration tracker methods
-/* SubgradientInstance::Iteration::Iteration(int k, const SparseVector& u,
-                                          const SparseVector& x,
-                                          const SparseVector& s,
-                                          const SparseVector& d, double phi,
-                                          double obj, double lambda, double mu,
-                                          double delta) {
-    this->k = k;
-    this->u = u;
-    this->x = x;
-    this->s = s;
-    this->d = d;
-    this->phi = phi;
-    this->obj = obj;
-    this->lambda = lambda;
-    this->mu = mu;
-    this->delta = delta;
-} */
-
-/* std::ostream& operator<<(std::ostream& os,
-                         const SubgradientInstance::Iteration& i) {
-    os << "phi: ";
-    if (!std::signbit(i.phi)) os << "+";
-    os << std::defaultfloat << i.phi << " ";
-
-    os << "obj: ";
-    if (!std::signbit(i.obj)) os << "+";
-    os << std::defaultfloat << i.obj << " ";
-
-    os << "  [iteration " << i.k << "]";
-
-    if (EXTRA) {
-        os << "\n";
-        os << "lambda: " << i.lambda << " mu: " << i.mu << " delta: " << i.delta
-           << "\n";
-        os << "x: " << i.x;
-        os << "u: " << i.u;
-        os << "s: " << i.s;
-        os << "d: " << i.d;
-    }
-
-    return os;
-} */

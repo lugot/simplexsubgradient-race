@@ -9,7 +9,14 @@
 #include "../include/globals.h"
 #include "../include/sparse_matrix.h"
 
-SparseVector::SparseVector(int size) { this->size = size; }
+SparseVector::SparseVector(int size) {
+    this->size = size;
+    // this->positive = false;
+}
+/* SparseVector::SparseVector(int size, bool positive) {
+    this->size = size;
+    this->positive = positive;
+} */
 
 void SparseVector::push_back(std::pair<int, double> p) {
     if (p.second == 0.0) return;
@@ -252,27 +259,64 @@ bool SparseVector::operator<(const SparseVector& x) {
     while (it != data.end() && itx != x.data.end()) {
         // TODO(lugot): PERFORMANCE
         if (it->first == itx->first) {
-            if (itx->second - it->second < EPSILON) return false;
+            if (itx->second - it->second < EPS) return false;
 
             ++it;
             ++itx;
         } else if (it->first < itx->first) {
-            if (-it->second < EPSILON) return false;
+            if (-it->second < EPS) return false;
 
             ++it;
         } else {
-            if (itx->second < EPSILON) return false;
+            if (itx->second < EPS) return false;
 
             ++itx;
         }
     }
     while (it != data.end()) {
-        if (-it->second < EPSILON) return false;
+        if (-it->second < EPS) return false;
 
         ++it;
     }
     while (itx != x.data.end()) {
-        if (itx->second < EPSILON) return false;
+        if (itx->second < EPS) return false;
+
+        ++itx;
+    }
+
+    return true;
+}
+bool SparseVector::operator==(const SparseVector& x) {
+    assert(size == x.size);
+
+    std::vector<std::pair<int, double>>::const_iterator it, itx;
+    it = data.begin();
+    itx = x.data.begin();
+
+    while (it != data.end() && itx != x.data.end()) {
+        // TODO(lugot): PERFORMANCE
+        if (it->first == itx->first) {
+            if (fabs(it->second - itx->second) > EPS) return false;
+
+            ++it;
+            ++itx;
+        } else if (it->first < itx->first) {
+            if (fabs(it->second) > EPS) return false;
+
+            ++it;
+        } else {
+            if (fabs(itx->second) > EPS) return false;
+
+            ++itx;
+        }
+    }
+    while (it != data.end()) {
+        if (fabs(it->second) > EPS) return false;
+
+        ++it;
+    }
+    while (itx != x.data.end()) {
+        if (fabs(itx->second) > EPS) return false;
 
         ++itx;
     }

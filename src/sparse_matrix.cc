@@ -41,10 +41,10 @@ std::ostream& operator<<(std::ostream& os, const SparseMatrix& m) {
     os << "SparseMatrix dim " << m.nrows << " x " << m.ncols << "\n";
     if (VERBOSE) {
         for (int i = 0; i < m.nrows; i++) {
-            os << "Row" << i + 1 << ": " << m.rows[i];
+            os << "Row" << i + 1 << ": " << m.rows[i] << std::endl;
         }
         for (int j = 0; j < m.ncols; j++) {
-            os << "Col" << j + 1 << ": " << m.cols[j];
+            os << "Col" << j + 1 << ": " << m.cols[j] << std::endl;
         }
     }
 
