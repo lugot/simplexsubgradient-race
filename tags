@@ -9,38 +9,13 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	5.9.0	/p5.9.20210110.0/
-$(BIN_DIR)	build/Makefile	/^$(BIN_DIR) $(OBJ_DIR):$/;"	t
-$(EXE)	build/Makefile	/^$(EXE): $(OBJS) $(LIBUTILS) | $(BIN_DIR)$/;"	t
-$(LIBUTILS)	old/Makefile	/^$(LIBUTILS) : $(HEADERS_LIBUTILS)$/;"	t
-$(LIBUTILS)	old/Makefile	/^$(LIBUTILS): $(OBJS_LIBUTILS)$/;"	t
 $(LIBUTILS)	src/Makefile	/^$(LIBUTILS) : $(HEADERS_LIBUTILS)$/;"	t
 $(LIBUTILS)	src/Makefile	/^$(LIBUTILS): $(OBJS_LIBUTILS)$/;"	t
-$(LIBUTILS)	trash/Makefile	/^$(LIBUTILS) : $(HEADERS_LIBUTILS)$/;"	t
-$(LIBUTILS)	trash/Makefile	/^$(LIBUTILS): $(OBJS_LIBUTILS)$/;"	t
-$(LIBUTILS)	trash/src_beforesparsity/Makefile	/^$(LIBUTILS) : $(HEADERS_LIBUTILS)$/;"	t
-$(LIBUTILS)	trash/src_beforesparsity/Makefile	/^$(LIBUTILS): $(OBJS_LIBUTILS)$/;"	t
-$(OBJS)	old/Makefile	/^$(OBJS) : $(HEADERS)$/;"	t
 $(OBJS)	src/Makefile	/^$(OBJS) : $(HEADERS)$/;"	t
-$(OBJS)	trash/Makefile	/^$(OBJS) : $(HEADERS)$/;"	t
-$(OBJS)	trash/src_beforesparsity/Makefile	/^$(OBJS) : $(HEADERS)$/;"	t
-$(OBJ_DIR)	build/Makefile	/^$(BIN_DIR) $(OBJ_DIR):$/;"	t
-$(OBJ_DIR)/%.o	build/Makefile	/^$(OBJ_DIR)\/%.o: $(SRC_DIR)\/%.c | $(OBJ_DIR)$/;"	t
-$(TARGET)	old/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"	t
 $(TARGET)	src/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"	t
-$(TARGET)	trash/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"	t
-$(TARGET)	trash/src_beforesparsity/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"	t
-.c.o	old/Makefile	/^.c.o :$/;"	t
 .c.o	src/Makefile	/^.c.o :$/;"	t
-.c.o	trash/Makefile	/^.c.o :$/;"	t
-.c.o	trash/src_beforesparsity/Makefile	/^.c.o :$/;"	t
-.cc.o	old/Makefile	/^.cc.o :$/;"	t
 .cc.o	src/Makefile	/^.cc.o :$/;"	t
-.cc.o	trash/Makefile	/^.cc.o :$/;"	t
-.cc.o	trash/src_beforesparsity/Makefile	/^.cc.o :$/;"	t
-.cpp.o	old/Makefile	/^.cpp.o :$/;"	t
 .cpp.o	src/Makefile	/^.cpp.o :$/;"	t
-.cpp.o	trash/Makefile	/^.cpp.o :$/;"	t
-.cpp.o	trash/src_beforesparsity/Makefile	/^.cpp.o :$/;"	t
 0	compile_commands.json	/^      "\/usr\/bin\/g++",$/;"	s	array:0.arguments
 0	compile_commands.json	/^      "\/usr\/bin\/g++",$/;"	s	array:1.arguments
 0	compile_commands.json	/^      "\/usr\/bin\/g++",$/;"	s	array:2.arguments
@@ -49,10 +24,6 @@ $(TARGET)	trash/src_beforesparsity/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"
 0	compile_commands.json	/^      "\/usr\/bin\/g++",$/;"	s	array:5.arguments
 0	compile_commands.json	/^      "\/usr\/bin\/g++",$/;"	s	array:6.arguments
 0	compile_commands.json	/^  {$/;"	o
-0	old/compile_commands.json	/^      "\/usr\/bin\/g++",$/;"	s	array:0.arguments
-0	old/compile_commands.json	/^  {$/;"	o
-0	trash/src_beforesparsity/compile_commands.json	/^      "\/usr\/bin\/g++",$/;"	s	array:0.arguments
-0	trash/src_beforesparsity/compile_commands.json	/^  {$/;"	o
 1	compile_commands.json	/^      "-Wall",$/;"	s	array:0.arguments
 1	compile_commands.json	/^      "-Wall",$/;"	s	array:1.arguments
 1	compile_commands.json	/^      "-Wall",$/;"	s	array:2.arguments
@@ -61,8 +32,6 @@ $(TARGET)	trash/src_beforesparsity/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"
 1	compile_commands.json	/^      "-Wall",$/;"	s	array:5.arguments
 1	compile_commands.json	/^      "-Wall",$/;"	s	array:6.arguments
 1	compile_commands.json	/^  {$/;"	o
-1	old/compile_commands.json	/^      "-Wall",$/;"	s	array:0.arguments
-1	trash/src_beforesparsity/compile_commands.json	/^      "-Wall",$/;"	s	array:0.arguments
 10	compile_commands.json	/^      "cplex_instance.cc"$/;"	s	array:3.arguments
 10	compile_commands.json	/^      "instance.cc"$/;"	s	array:2.arguments
 10	compile_commands.json	/^      "logger.cc"$/;"	s	array:1.arguments
@@ -70,10 +39,6 @@ $(TARGET)	trash/src_beforesparsity/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"
 10	compile_commands.json	/^      "sparse_matrix.cc"$/;"	s	array:5.arguments
 10	compile_commands.json	/^      "sparse_vector.cc"$/;"	s	array:6.arguments
 10	compile_commands.json	/^      "subgradient_instance.cc"$/;"	s	array:4.arguments
-10	old/compile_commands.json	/^      "-o",$/;"	s	array:0.arguments
-10	trash/src_beforesparsity/compile_commands.json	/^      "-o",$/;"	s	array:0.arguments
-11	old/compile_commands.json	/^      "parser.o"$/;"	s	array:0.arguments
-11	trash/src_beforesparsity/compile_commands.json	/^      "parser.o"$/;"	s	array:0.arguments
 2	compile_commands.json	/^      "-O0",$/;"	s	array:0.arguments
 2	compile_commands.json	/^      "-O0",$/;"	s	array:1.arguments
 2	compile_commands.json	/^      "-O0",$/;"	s	array:2.arguments
@@ -82,9 +47,6 @@ $(TARGET)	trash/src_beforesparsity/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"
 2	compile_commands.json	/^      "-O0",$/;"	s	array:5.arguments
 2	compile_commands.json	/^      "-O0",$/;"	s	array:6.arguments
 2	compile_commands.json	/^  {$/;"	o
-2	old/compile_commands.json	/^      "-O0",$/;"	s	array:0.arguments
-2	old/cplex_instance.cc	/^         major 2: mat.reserve(VectorXi::Constant(cols,6)); 3: for each i,j$/;"	v	typeref:typename:major
-2	trash/src_beforesparsity/compile_commands.json	/^      "-O0",$/;"	s	array:0.arguments
 3	compile_commands.json	/^      "-g",$/;"	s	array:0.arguments
 3	compile_commands.json	/^      "-g",$/;"	s	array:1.arguments
 3	compile_commands.json	/^      "-g",$/;"	s	array:2.arguments
@@ -93,8 +55,6 @@ $(TARGET)	trash/src_beforesparsity/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"
 3	compile_commands.json	/^      "-g",$/;"	s	array:5.arguments
 3	compile_commands.json	/^      "-g",$/;"	s	array:6.arguments
 3	compile_commands.json	/^  {$/;"	o
-3	old/compile_commands.json	/^      "-g",$/;"	s	array:0.arguments
-3	trash/src_beforesparsity/compile_commands.json	/^      "-g",$/;"	s	array:0.arguments
 4	compile_commands.json	/^      "-I..\/include",$/;"	s	array:0.arguments
 4	compile_commands.json	/^      "-I..\/include",$/;"	s	array:1.arguments
 4	compile_commands.json	/^      "-I..\/include",$/;"	s	array:2.arguments
@@ -103,8 +63,6 @@ $(TARGET)	trash/src_beforesparsity/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"
 4	compile_commands.json	/^      "-I..\/include",$/;"	s	array:5.arguments
 4	compile_commands.json	/^      "-I..\/include",$/;"	s	array:6.arguments
 4	compile_commands.json	/^  {$/;"	o
-4	old/compile_commands.json	/^      "-I..\/include",$/;"	s	array:0.arguments
-4	trash/src_beforesparsity/compile_commands.json	/^      "-I..\/include",$/;"	s	array:0.arguments
 5	compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/cplex\/include",$/;"	s	array:0.arguments
 5	compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/cplex\/include",$/;"	s	array:1.arguments
 5	compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/cplex\/include",$/;"	s	array:2.arguments
@@ -113,8 +71,6 @@ $(TARGET)	trash/src_beforesparsity/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"
 5	compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/cplex\/include",$/;"	s	array:5.arguments
 5	compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/cplex\/include",$/;"	s	array:6.arguments
 5	compile_commands.json	/^  {$/;"	o
-5	old/compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/cplex\/include",$/;"	s	array:0.arguments
-5	trash/src_beforesparsity/compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/cplex\/include",$/;"	s	array:0.arguments
 6	compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/concert\/include",$/;"	s	array:0.arguments
 6	compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/concert\/include",$/;"	s	array:1.arguments
 6	compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/concert\/include",$/;"	s	array:2.arguments
@@ -123,8 +79,6 @@ $(TARGET)	trash/src_beforesparsity/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"
 6	compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/concert\/include",$/;"	s	array:5.arguments
 6	compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/concert\/include",$/;"	s	array:6.arguments
 6	compile_commands.json	/^  {$/;"	o
-6	old/compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/concert\/include",$/;"	s	array:0.arguments
-6	trash/src_beforesparsity/compile_commands.json	/^      "-I\/opt\/ibm\/ILOG\/CPLEX_Studio201\/concert\/include",$/;"	s	array:0.arguments
 7	compile_commands.json	/^      "-c",$/;"	s	array:0.arguments
 7	compile_commands.json	/^      "-c",$/;"	s	array:1.arguments
 7	compile_commands.json	/^      "-c",$/;"	s	array:2.arguments
@@ -132,8 +86,6 @@ $(TARGET)	trash/src_beforesparsity/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"
 7	compile_commands.json	/^      "-c",$/;"	s	array:4.arguments
 7	compile_commands.json	/^      "-c",$/;"	s	array:5.arguments
 7	compile_commands.json	/^      "-c",$/;"	s	array:6.arguments
-7	old/compile_commands.json	/^      "-I\/usr\/include\/eigen3",$/;"	s	array:0.arguments
-7	trash/src_beforesparsity/compile_commands.json	/^      "-I\/usr\/include\/eigen3",$/;"	s	array:0.arguments
 8	compile_commands.json	/^      "-o",$/;"	s	array:0.arguments
 8	compile_commands.json	/^      "-o",$/;"	s	array:1.arguments
 8	compile_commands.json	/^      "-o",$/;"	s	array:2.arguments
@@ -141,8 +93,6 @@ $(TARGET)	trash/src_beforesparsity/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"
 8	compile_commands.json	/^      "-o",$/;"	s	array:4.arguments
 8	compile_commands.json	/^      "-o",$/;"	s	array:5.arguments
 8	compile_commands.json	/^      "-o",$/;"	s	array:6.arguments
-8	old/compile_commands.json	/^      "-c",$/;"	s	array:0.arguments
-8	trash/src_beforesparsity/compile_commands.json	/^      "-c",$/;"	s	array:0.arguments
 9	compile_commands.json	/^      "cplex_instance.o",$/;"	s	array:3.arguments
 9	compile_commands.json	/^      "instance.o",$/;"	s	array:2.arguments
 9	compile_commands.json	/^      "logger.o",$/;"	s	array:1.arguments
@@ -150,51 +100,21 @@ $(TARGET)	trash/src_beforesparsity/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"
 9	compile_commands.json	/^      "sparse_matrix.o",$/;"	s	array:5.arguments
 9	compile_commands.json	/^      "sparse_vector.o",$/;"	s	array:6.arguments
 9	compile_commands.json	/^      "subgradient_instance.o",$/;"	s	array:4.arguments
-9	old/compile_commands.json	/^      "parser.cc",$/;"	s	array:0.arguments
-9	trash/src_beforesparsity/compile_commands.json	/^      "parser.cc",$/;"	s	array:0.arguments
 A	include/subgradient_instance.h	/^    SparseMatrix A;$/;"	m	class:SubgradientInstance	typeref:typename:SparseMatrix
-AR	build/Makefile	/^AR = ar rc$/;"	m
-AR	old/Makefile	/^AR = ar rc$/;"	m
 AR	src/Makefile	/^AR = ar rc$/;"	m
-AR	trash/Makefile	/^AR = ar rc$/;"	m
-AR	trash/src_beforesparsity/Makefile	/^AR = ar rc$/;"	m
-BIN_DIR	build/Makefile	/^BIN_DIR := .$/;"	m
-CC	old/Makefile	/^CC = g++$/;"	m
 CC	src/Makefile	/^CC = g++$/;"	m
-CC	trash/Makefile	/^CC = g++$/;"	m
-CC	trash/src_beforesparsity/Makefile	/^CC = g++$/;"	m
-CPLEX_HOME	build/Makefile	/^CPLEX_HOME := \/opt\/ibm\/ILOG\/CPLEX_Studio201$/;"	m
-CPLEX_HOME	old/Makefile	/^CPLEX_HOME = \/opt\/ibm\/ILOG\/CPLEX_Studio201$/;"	m
 CPLEX_HOME	src/Makefile	/^CPLEX_HOME = \/opt\/ibm\/ILOG\/CPLEX_Studio201$/;"	m
-CPLEX_HOME	trash/Makefile	/^CPLEX_HOME = \/opt\/ibm\/ILOG\/CPLEX_Studio201$/;"	m
-CPLEX_HOME	trash/src_beforesparsity/Makefile	/^CPLEX_HOME = \/opt\/ibm\/ILOG\/CPLEX_Studio201$/;"	m
-CPPFLAGS	build/Makefile	/^CPPFLAGS := -I..\/include -I${CPLEX_HOME}\/cplex\/include -I${CPLEX_HOME}\/concert\/include -I${/;"	m
-CXX	build/Makefile	/^CXX = g++$/;"	m
-CXXFLAGS	build/Makefile	/^CXXFLAGS := -Wall -g$/;"	m
 CmdLineParser	src/profiler.py	/^class CmdLineParser(object):$/;"	c
 Conditional	include/subgradient_instance.h	/^        Conditional,$/;"	e	enum:SubgradientInstance::Methods
 CplexInstance	include/cplex_instance.h	/^class CplexInstance : public Instance {$/;"	c
-CplexInstance	old/cplex_instance.cc	/^CplexInstance::CplexInstance() {$/;"	f	class:CplexInstance
-CplexInstance	old/cplex_instance.cc	/^CplexInstance::CplexInstance(std::string model_name) {$/;"	f	class:CplexInstance
 CplexInstance	src/cplex_instance.cc	/^CplexInstance::CplexInstance() : Instance() {}$/;"	f	class:CplexInstance
 CplexInstance	src/cplex_instance.cc	/^CplexInstance::CplexInstance(const CplexInstance& other) {$/;"	f	class:CplexInstance
 CplexInstance	src/cplex_instance.cc	/^CplexInstance::CplexInstance(const std::string& filename) : Instance() {$/;"	f	class:CplexInstance
-CplexInstance	trash/src_beforesparsity/cplex_instance.cc	/^CplexInstance::CplexInstance() : Instance() {}$/;"	f	class:CplexInstance
-CplexInstance	trash/src_beforesparsity/cplex_instance.cc	/^CplexInstance::CplexInstance(const CplexInstance& other) {$/;"	f	class:CplexInstance
-CplexInstance	trash/src_beforesparsity/cplex_instance.cc	/^CplexInstance::CplexInstance(const std::string& model_name) : Instance() {$/;"	f	class:CplexInstance
-DELIM	include/globals.h	/^#define DELIM /;"	d
+DELIM	src/globals.cc	/^char DELIM = ',';$/;"	v	typeref:typename:char
 Deflected	include/subgradient_instance.h	/^        Deflected,$/;"	e	enum:SubgradientInstance::Methods
-EIGEN_HOME	build/Makefile	/^EIGEN_HOME := \/usr\/include\/eigen3$/;"	m
-EIGEN_HOME	old/Makefile	/^EIGEN_HOME = \/usr\/include\/eigen3$/;"	m
-EIGEN_HOME	trash/Makefile	/^EIGEN_HOME = \/usr\/include\/eigen3$/;"	m
-EIGEN_HOME	trash/src_beforesparsity/Makefile	/^EIGEN_HOME = \/usr\/include\/eigen3$/;"	m
 EPS	include/globals.h	/^#define EPS /;"	d
-EPS	old/globals.cc	/^double EPS = 1e-5;$/;"	v	typeref:typename:double
-EPS	src/globals.cc	/^double EPS = 1e-5;$/;"	v	typeref:typename:double
-EPS	trash/src_beforesparsity/globals.cc	/^double EPS = 1e-5;$/;"	v	typeref:typename:double
 EQUAL	include/subgradient_instance.h	/^    enum Sense { GREATER, EQUAL, LESS };$/;"	e	enum:SubgradientInstance::Sense
-EXE	build/Makefile	/^EXE := $(BIN_DIR)\/main$/;"	m
-EXTRA	include/globals.h	/^#define EXTRA /;"	d
+EXTRA	src/globals.cc	/^bool EXTRA = false;$/;"	v	typeref:typename:bool
 EmptyInstance	include/instance.h	/^        EmptyInstance,$/;"	e	enum:Instance::SolutionStatus
 EpsilonOptimal	include/subgradient_instance.h	/^        EpsilonOptimal$/;"	e	enum:SubgradientInstance::Status
 Error	include/instance.h	/^        Error,$/;"	e	enum:Instance::SolutionStatus
@@ -202,128 +122,76 @@ Error	include/subgradient_instance.h	/^        Error,$/;"	e	enum:SubgradientInst
 Feasible	include/instance.h	/^        Feasible,$/;"	e	enum:Instance::SolutionStatus
 GREATER	include/subgradient_instance.h	/^    enum Sense { GREATER, EQUAL, LESS };$/;"	e	enum:SubgradientInstance::Sense
 HARD_LAMBDA_TRESHOLD	include/globals.h	/^#define HARD_LAMBDA_TRESHOLD /;"	d
-HEADERS	old/Makefile	/^HEADERS =$/;"	m
 HEADERS	src/Makefile	/^HEADERS =$/;"	m
-HEADERS	trash/Makefile	/^HEADERS =$/;"	m
-HEADERS	trash/src_beforesparsity/Makefile	/^HEADERS =$/;"	m
 Hybrid	include/subgradient_instance.h	/^        Hybrid,$/;"	e	enum:SubgradientInstance::Methods
 IMHERE	include/globals.h	/^#define IMHERE /;"	d
-INC	old/Makefile	/^INC = -I..\/include -I${CPLEX_HOME}\/cplex\/include -I${CPLEX_HOME}\/concert\/include -I${EIGEN_/;"	m
 INC	src/Makefile	/^INC = -I..\/include -I${CPLEX_HOME}\/cplex\/include -I${CPLEX_HOME}\/concert\/include$/;"	m
-INC	trash/Makefile	/^INC = -I..\/include -I${CPLEX_HOME}\/cplex\/include -I${CPLEX_HOME}\/concert\/include -I${EIGEN_/;"	m
-INC	trash/src_beforesparsity/Makefile	/^INC = -I..\/include -I${CPLEX_HOME}\/cplex\/include -I${CPLEX_HOME}\/concert\/include -I${EIGEN_/;"	m
 INCLUDE_CPLEX_INSTANCE_H_	include/cplex_instance.h	/^#define INCLUDE_CPLEX_INSTANCE_H_$/;"	d
 INCLUDE_GLOBALS_H_	include/globals.h	/^#define INCLUDE_GLOBALS_H_$/;"	d
 INCLUDE_INSTANCE_H_	include/instance.h	/^#define INCLUDE_INSTANCE_H_$/;"	d
-INCLUDE_LOGGER_H_	include/logger.h	/^#define INCLUDE_LOGGER_H_$/;"	d
+INCLUDE_LOGLINE_H_	include/logline.h	/^#define INCLUDE_LOGLINE_H_$/;"	d
 INCLUDE_SPARSE_MATRIX_H_	include/sparse_matrix.h	/^#define INCLUDE_SPARSE_MATRIX_H_$/;"	d
-INCLUDE_SPARSE_MATRIX_H_	trash/sparse_matrix.h	/^#define INCLUDE_SPARSE_MATRIX_H_$/;"	d
 INCLUDE_SPARSE_VECTOR_H_	include/sparse_vector.h	/^#define INCLUDE_SPARSE_VECTOR_H_$/;"	d
 INCLUDE_SUBGRADIENT_INSTANCE_H_	include/subgradient_instance.h	/^#define INCLUDE_SUBGRADIENT_INSTANCE_H_$/;"	d
 INCLUDE_UTILS_H_	include/utils.h	/^#define INCLUDE_UTILS_H_$/;"	d
 INF	include/globals.h	/^#define INF /;"	d
+ITERINFO	src/globals.cc	/^int ITERINFO = 2e9;$/;"	v	typeref:typename:int
 Infeasible	include/instance.h	/^        Infeasible,$/;"	e	enum:Instance::SolutionStatus
 InfeasibleOrUnbounded	include/instance.h	/^        InfeasibleOrUnbounded,$/;"	e	enum:Instance::SolutionStatus
 Instance	include/instance.h	/^class Instance {$/;"	c
 Instance	src/instance.cc	/^Instance::Instance() { status = SolutionStatus::NeverSolved; }$/;"	f	class:Instance
-Instance	trash/src_beforesparsity/instance.cc	/^Instance::Instance() { status = SolutionStatus::NeverSolved; }$/;"	f	class:Instance
-Iteration	trash/src_beforesparsity/subgradient_instance.cc	/^SubgradientInstance::Iteration::Iteration(int k, Eigen::SparseVector<double> u,$/;"	f	class:SubgradientInstance::Iteration
-LDFLAGS	build/Makefile	/^LDFLAGS  := -L${CPLEX_HOME}\/cplex\/lib\/x86-64_linux\/static_pic -L${CPLEX_HOME}\/concert\/lib\//;"	m
-LDLIBS	build/Makefile	/^LDLIBS   := -lm -lilocplex -lconcert -lcplex -lm -lpthread -ldl$/;"	m
 LESS	include/subgradient_instance.h	/^    enum Sense { GREATER, EQUAL, LESS };$/;"	e	enum:SubgradientInstance::Sense
-LIBS	old/Makefile	/^LIBS = -L${CPLEX_HOME}\/cplex\/lib\/x86-64_linux\/static_pic -L${CPLEX_HOME}\/concert\/lib\/x86-/;"	m
 LIBS	src/Makefile	/^LIBS = -L${CPLEX_HOME}\/cplex\/lib\/x86-64_linux\/static_pic -L${CPLEX_HOME}\/concert\/lib\/x86-/;"	m
-LIBS	trash/Makefile	/^LIBS = -L${CPLEX_HOME}\/cplex\/lib\/x86-64_linux\/static_pic -L${CPLEX_HOME}\/concert\/lib\/x86-/;"	m
-LIBS	trash/src_beforesparsity/Makefile	/^LIBS = -L${CPLEX_HOME}\/cplex\/lib\/x86-64_linux\/static_pic -L${CPLEX_HOME}\/concert\/lib\/x86-/;"	m
-LOG	include/globals.h	/^#define LOG /;"	d
+LOGGING	src/globals.cc	/^bool LOGGING = false;$/;"	v	typeref:typename:bool
 LOWERBOUND	include/globals.h	/^#define LOWERBOUND /;"	d
-Logger	include/logger.h	/^class Logger {$/;"	c
+LogLine	include/logline.h	/^    LogLine() {$/;"	f	class:LogLine
+LogLine	include/logline.h	/^    LogLine(char delim, bool fancy) {$/;"	f	class:LogLine
+LogLine	include/logline.h	/^class LogLine {$/;"	c
 LowLambdaHard	include/subgradient_instance.h	/^        LowLambdaHard,$/;"	e	enum:SubgradientInstance::Status
 LowLambdaSoft	include/subgradient_instance.h	/^        LowLambdaSoft,$/;"	e	enum:SubgradientInstance::Status
-MAX_ITERATIONS	include/globals.h	/^#define MAX_ITERATIONS /;"	d
+MAXITER	src/globals.cc	/^int MAXITER = 10;$/;"	v	typeref:typename:int
 MU_MAX	include/globals.h	/^#define MU_MAX /;"	d
 MU_MIN	include/globals.h	/^#define MU_MIN /;"	d
 Methods	include/subgradient_instance.h	/^    enum class Methods {$/;"	g	class:SubgradientInstance
 ModelChanged	include/instance.h	/^        ModelChanged,$/;"	e	enum:Instance::SolutionStatus
 NeverSolved	include/instance.h	/^        NeverSolved,$/;"	e	enum:Instance::SolutionStatus
 NeverSolved	include/subgradient_instance.h	/^        NeverSolved,$/;"	e	enum:SubgradientInstance::Status
-Node	trash/sparse_matrix.cc	/^Node::Node(int row, int col, double data) {$/;"	f	class:Node
-Node	trash/sparse_matrix.h	/^class Node {$/;"	c
-OBJ	build/Makefile	/^OBJ := $(SRC:$(SRC_DIR)\/%.c=$(OBJ_DIR)\/%.o)$/;"	m
-OBJS	old/Makefile	/^OBJS = main.o cplex_instance.o$/;"	m
-OBJS	src/Makefile	/^OBJS = main.o logger.o instance.o cplex_instance.o subgradient_instance.o sparse_matrix.o sparse/;"	m
-OBJS	trash/Makefile	/^OBJS = main.o utils.o instance.o cplex_instance.o subgradient_instance.o sparse_matrix.o sparse_/;"	m
-OBJS	trash/src_beforesparsity/Makefile	/^OBJS = main.o utils.o instance.o cplex_instance.o subgradient_instance.o sparse_matrix.o sparse_/;"	m
-OBJ_DIR	build/Makefile	/^OBJ_DIR := obj$/;"	m
+OBJS	src/Makefile	/^OBJS = globals.o main.o instance.o cplex_instance.o subgradient_instance.o sparse_matrix.o spars/;"	m
 Optimal	include/instance.h	/^        Optimal,$/;"	e	enum:Instance::SolutionStatus
 Optimal	include/subgradient_instance.h	/^        Optimal,$/;"	e	enum:SubgradientInstance::Status
 P	include/globals.h	/^#define P /;"	d
 Pure	include/subgradient_instance.h	/^        Pure,$/;"	e	enum:SubgradientInstance::Methods
-RM	build/Makefile	/^RM = rm -rf$/;"	m
-RM	old/Makefile	/^RM = rm -rf$/;"	m
 RM	src/Makefile	/^RM = rm -rf$/;"	m
-RM	trash/Makefile	/^RM = rm -rf$/;"	m
-RM	trash/src_beforesparsity/Makefile	/^RM = rm -rf$/;"	m
 ReachedMaxIterations	include/subgradient_instance.h	/^        ReachedMaxIterations,$/;"	e	enum:SubgradientInstance::Status
+ReachedTimelimit	include/subgradient_instance.h	/^        ReachedTimelimit,$/;"	e	enum:SubgradientInstance::Status
 SOFT_LAMBDA_MAXLIFE	include/globals.h	/^#define SOFT_LAMBDA_MAXLIFE /;"	d
 SOFT_LAMBDA_TRESHOLD	include/globals.h	/^#define SOFT_LAMBDA_TRESHOLD /;"	d
-SRC	build/Makefile	/^SRC := $(wildcard $(SRC_DIR)\/*.cc)$/;"	m
-SRC_DIR	build/Makefile	/^SRC_DIR := ..\/src$/;"	m
 Sense	include/subgradient_instance.h	/^    enum Sense { GREATER, EQUAL, LESS };$/;"	g	class:SubgradientInstance
 SolutionStatus	include/instance.h	/^    enum class SolutionStatus {$/;"	g	class:Instance
 SparseMatrix	include/sparse_matrix.h	/^class SparseMatrix {$/;"	c
 SparseMatrix	src/sparse_matrix.cc	/^SparseMatrix::SparseMatrix(int nrows, int ncols) {$/;"	f	class:SparseMatrix
-SparseMatrix	trash/sparse_matrix.cc	/^SparseMatrix::SparseMatrix(int nrows, int ncols) {$/;"	f	class:SparseMatrix
-SparseMatrix	trash/sparse_matrix.h	/^class SparseMatrix {$/;"	c
-SparseMatrix	trash/src_beforesparsity/sparse_matrix.cc	/^SparseMatrix::SparseMatrix(int nrows, int ncols) {$/;"	f	class:SparseMatrix
 SparseVector	include/sparse_vector.h	/^class SparseVector {$/;"	c
 SparseVector	src/sparse_vector.cc	/^SparseVector::SparseVector(int size) {$/;"	f	class:SparseVector
-SparseVector	trash/src_beforesparsity/sparse_vector.cc	/^SparseVector::SparseVector(int size) { this->size = size; }$/;"	f	class:SparseVector
 Status	include/subgradient_instance.h	/^    enum class Status {$/;"	g	class:SubgradientInstance
 SubgradientInstance	include/subgradient_instance.h	/^class SubgradientInstance {$/;"	c
 SubgradientInstance	src/subgradient_instance.cc	/^SubgradientInstance::SubgradientInstance(const CplexInstance& cinst) {$/;"	f	class:SubgradientInstance
-SubgradientInstance	trash/src_beforesparsity/subgradient_instance.cc	/^SubgradientInstance::SubgradientInstance(CplexInstance& cinst) : Instance() {$/;"	f	class:SubgradientInstance
-TARGET	old/Makefile	/^TARGET = thesis$/;"	m
 TARGET	src/Makefile	/^TARGET = thesis$/;"	m
-TARGET	trash/Makefile	/^TARGET = thesis$/;"	m
-TARGET	trash/src_beforesparsity/Makefile	/^TARGET = thesis$/;"	m
 TAU	include/globals.h	/^#define TAU /;"	d
-TRACKING	include/globals.h	/^#define TRACKING /;"	d
+TIMILIMIT	src/globals.cc	/^int TIMILIMIT = -1;$/;"	v	typeref:typename:int
 UPPERBOUND	include/globals.h	/^#define UPPERBOUND /;"	d
 Unbounded	include/instance.h	/^        Unbounded,$/;"	e	enum:Instance::SolutionStatus
 Unknown	include/instance.h	/^        Unknown,$/;"	e	enum:Instance::SolutionStatus
-VERBOSE	include/globals.h	/^#define VERBOSE /;"	d
-VERBOSE	old/globals.cc	/^int VERBOSE = 1;$/;"	v	typeref:typename:int
-VERBOSE	src/globals.cc	/^int VERBOSE = 1;$/;"	v	typeref:typename:int
-VERBOSE	trash/src_beforesparsity/globals.cc	/^int VERBOSE = 1;$/;"	v	typeref:typename:int
-__anon804d739c0102	src/subgradient_instance.cc	/^                                    [](const std::pair<int, double>& p) {$/;"	f	function:SubgradientInstance::solvePure	file:
-__anon804d739c0202	src/subgradient_instance.cc	/^                                    [](const std::pair<int, double>& p) {$/;"	f	function:SubgradientInstance::solveDeflected	file:
-__anon804d739c0302	src/subgradient_instance.cc	/^                                    [&u](const std::pair<int, double>& p) {$/;"	f	function:SubgradientInstance::solveConditional	file:
-__anon804d739c0402	src/subgradient_instance.cc	/^                                    [](const std::pair<int, double>& p) {$/;"	f	function:SubgradientInstance::solveConditional	file:
-__anon804d739c0502	src/subgradient_instance.cc	/^                               [&u](const std::pair<int, double>& p) {$/;"	f	function:SubgradientInstance::solveHybrid	file:
-__anon804d739c0602	src/subgradient_instance.cc	/^                                    [](const std::pair<int, double>& p) {$/;"	f	function:SubgradientInstance::solveHybrid	file:
+VERBOSE	src/globals.cc	/^bool VERBOSE = false;$/;"	v	typeref:typename:bool
+__anon804d739c0102	src/subgradient_instance.cc	/^                               [&u, this](const std::pair<int, double>& p) {$/;"	f	function:SubgradientInstance::solveHybrid	file:
+__anon804d739c0202	src/subgradient_instance.cc	/^                           [&u](const std::pair<int, double>& p) {$/;"	f	function:SubgradientInstance::solveHybrid	file:
+__anon804d739c0302	src/subgradient_instance.cc	/^                                    [this](const std::pair<int, double>& p) {$/;"	f	function:SubgradientInstance::solveHybrid	file:
 __anonb99be2300102	src/sparse_vector.cc	/^                          [](const std::pair<int, double>& p, int target) {$/;"	f	function:SparseVector::isZero	file:
 __anonb99be2300202	src/sparse_vector.cc	/^                              [tollerance](const std::pair<int, double>& p) {$/;"	f	function:SparseVector::prune	file:
 __init__	src/profiler.py	/^	def __init__(self):$/;"	m	class:CmdLineParser
-add	src/logger.cc	/^void Logger::add(bool b) {$/;"	f	class:Logger	typeref:typename:void
-add	src/logger.cc	/^void Logger::add(double d) {$/;"	f	class:Logger	typeref:typename:void
-add	src/logger.cc	/^void Logger::add(int i) {$/;"	f	class:Logger	typeref:typename:void
-add	src/logger.cc	/^void Logger::add(std::string s) {$/;"	f	class:Logger	typeref:typename:void
-add	src/logger.cc	/^void Logger::add(std::vector<std::string> v) {$/;"	f	class:Logger	typeref:typename:void
 addOption	src/profiler.py	/^	def addOption(self, *args, **kwargs):$/;"	m	class:CmdLineParser
 addRow	src/sparse_matrix.cc	/^void SparseMatrix::addRow($/;"	f	class:SparseMatrix	typeref:typename:void
-addRow	trash/sparse_matrix.cc	/^void SparseMatrix::addRow($/;"	f	class:SparseMatrix	typeref:typename:void
-addRow	trash/src_beforesparsity/sparse_matrix.cc	/^void SparseMatrix::addRow($/;"	f	class:SparseMatrix	typeref:typename:void
-advanceRow	trash/sparse_matrix.cc	/^Node* SparseMatrix::advanceRow(int i) {$/;"	f	class:SparseMatrix	typeref:typename:Node *
-again	old/Makefile	/^again:$/;"	t
 again	src/Makefile	/^again:$/;"	t
-again	trash/Makefile	/^again:$/;"	t
-again	trash/src_beforesparsity/Makefile	/^again:$/;"	t
-all	build/Makefile	/^all: $(EXE)$/;"	t
-all	old/Makefile	/^all: $(TARGET)$/;"	t
 all	src/Makefile	/^all: $(TARGET)$/;"	t
-all	trash/Makefile	/^all: $(TARGET)$/;"	t
-all	trash/src_beforesparsity/Makefile	/^all: $(TARGET)$/;"	t
 arguments	compile_commands.json	/^    "arguments": [$/;"	a	object:0
 arguments	compile_commands.json	/^    "arguments": [$/;"	a	object:1
 arguments	compile_commands.json	/^    "arguments": [$/;"	a	object:2
@@ -331,33 +199,23 @@ arguments	compile_commands.json	/^    "arguments": [$/;"	a	object:3
 arguments	compile_commands.json	/^    "arguments": [$/;"	a	object:4
 arguments	compile_commands.json	/^    "arguments": [$/;"	a	object:5
 arguments	compile_commands.json	/^    "arguments": [$/;"	a	object:6
-arguments	old/compile_commands.json	/^    "arguments": [$/;"	a	object:0
-arguments	trash/src_beforesparsity/compile_commands.json	/^    "arguments": [$/;"	a	object:0
 b	include/subgradient_instance.h	/^    SparseVector c, b;$/;"	m	class:SubgradientInstance	typeref:typename:SparseVector
 best_ustar	include/subgradient_instance.h	/^    SparseVector best_ustar, best_xstar;$/;"	m	class:SubgradientInstance	typeref:typename:SparseVector
 best_xstar	include/subgradient_instance.h	/^    SparseVector best_ustar, best_xstar;$/;"	m	class:SubgradientInstance	typeref:typename:SparseVector
 bestsol_avaiable	include/subgradient_instance.h	/^    bool bestsol_avaiable;$/;"	m	class:SubgradientInstance	typeref:typename:bool
 c	include/subgradient_instance.h	/^    SparseVector c, b;$/;"	m	class:SubgradientInstance	typeref:typename:SparseVector
-clean	build/Makefile	/^clean:$/;"	t
-clean	old/Makefile	/^clean:$/;"	t
 clean	src/Makefile	/^clean:$/;"	t
-clean	trash/Makefile	/^clean:$/;"	t
-clean	trash/src_beforesparsity/Makefile	/^clean:$/;"	t
-col	trash/sparse_matrix.h	/^    int row, col;$/;"	m	class:Node	typeref:typename:int
 colors	src/profiler.py	/^colors = ['r', 'b', 'y', 'g', 'm', 'c']$/;"	v
 cols	include/sparse_matrix.h	/^    std::vector<SparseVector> rows, cols;$/;"	m	class:SparseMatrix	typeref:typename:std::vector<SparseVector>
-cols	trash/sparse_matrix.h	/^    std::vector<Node*> rows, cols;$/;"	m	class:SparseMatrix	typeref:typename:std::vector<Node * >
 constraintSense	src/subgradient_instance.cc	/^SubgradientInstance::Sense SubgradientInstance::constraintSense($/;"	f	class:SubgradientInstance	typeref:typename:SubgradientInstance::Sense
-constraintSense	trash/src_beforesparsity/cplex_instance.cc	/^CplexInstance::Sense CplexInstance::constraintSense(IloRange* r) {$/;"	f	class:CplexInstance	typeref:typename:CplexInstance::Sense
-constraintsUpperBound	trash/src_beforesparsity/subgradient_instance.cc	/^double SubgradientInstance::constraintsUpperBound() {$/;"	f	class:SubgradientInstance	typeref:typename:double
 cplex	include/cplex_instance.h	/^    IloCplex cplex;$/;"	m	class:CplexInstance	typeref:typename:IloCplex
 dashes	src/profiler.py	/^dashes = ['-',  # solid line$/;"	v
-data	include/logger.h	/^    std::vector<std::string> data;$/;"	m	class:Logger	typeref:typename:std::vector<std::string>
+data	include/logline.h	/^    std::vector<std::string> data;$/;"	m	class:LogLine	typeref:typename:std::vector<std::string>
 data	include/sparse_vector.h	/^    std::vector<std::pair<int, double>> data;$/;"	m	class:SparseVector	typeref:typename:std::vector<std::pair<int,double>>
-data	trash/sparse_matrix.h	/^    double data;$/;"	m	class:Node	typeref:typename:double
 defLW	src/profiler.py	/^defLW = 1.2  # default line width$/;"	v
 defMS	src/profiler.py	/^defMS = 7  # default marker size$/;"	v
-descendColumn	trash/sparse_matrix.cc	/^Node* SparseMatrix::descendColumn(int j) {$/;"	f	class:SparseMatrix	typeref:typename:Node *
+delim	include/logline.h	/^    char delim;$/;"	m	class:LogLine	typeref:typename:char
+directionInfeasible	src/subgradient_instance.cc	/^bool SubgradientInstance::directionInfeasible(const SparseVector& u,$/;"	f	class:SubgradientInstance	typeref:typename:bool
 directory	compile_commands.json	/^    "directory": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src",$/;"	s	object:0
 directory	compile_commands.json	/^    "directory": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src",$/;"	s	object:1
 directory	compile_commands.json	/^    "directory": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src",$/;"	s	object:2
@@ -365,18 +223,11 @@ directory	compile_commands.json	/^    "directory": "\/home\/lugot\/documents\/un
 directory	compile_commands.json	/^    "directory": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src",$/;"	s	object:4
 directory	compile_commands.json	/^    "directory": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src",$/;"	s	object:5
 directory	compile_commands.json	/^    "directory": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src",$/;"	s	object:6
-directory	old/compile_commands.json	/^    "directory": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src",$/;"	s	object:0
-directory	trash/src_beforesparsity/compile_commands.json	/^    "directory": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src",$/;"	s	object:0
 dist	src/sparse_vector.cc	/^double SparseVector::dist(const SparseVector& x, const SparseVector& y) {$/;"	f	class:SparseVector	typeref:typename:double
-dot	trash/src_beforesparsity/sparse_vector.cc	/^SparseVector SparseVector::dot(const SparseVector& x, const SparseVector& y) {$/;"	f	class:SparseVector	typeref:typename:SparseVector
-emitA	old/cplex_instance.cc	/^Eigen::SparseMatrix<double> emitA() {$/;"	f	typeref:typename:Eigen::SparseMatrix<double>
-emitb	old/cplex_instance.cc	/^Eigen::SparseVector<double> emitb() {$/;"	f	typeref:typename:Eigen::SparseVector<double>
-emitc	old/cplex_instance.cc	/^Eigen::SparseVector<double> emitc() {$/;"	f	typeref:typename:Eigen::SparseVector<double>
 env	include/cplex_instance.h	/^    IloEnv env;$/;"	m	class:CplexInstance	typeref:typename:IloEnv
+equal	include/subgradient_instance.h	/^    std::vector<bool> equal;  \/\/ TODO(lugot): CHANGE in classic sparse vector$/;"	m	class:SubgradientInstance	typeref:typename:std::vector<bool>
 extractConstraint	src/subgradient_instance.cc	/^void SubgradientInstance::extractConstraint($/;"	f	class:SubgradientInstance	typeref:typename:void
-extractConstraint	trash/src_beforesparsity/cplex_instance.cc	/^void CplexInstance::extractConstraint($/;"	f	class:CplexInstance	typeref:typename:void
-extractConstraint	trash/src_beforesparsity/cplex_instance.cc	/^void CplexInstance::extractConstraint(IloRange* r, int row,$/;"	f	class:CplexInstance	typeref:typename:void
-feasible	old/solvers.cc	/^bool lp::feasible(Eigen::SparseVector<double>& u) {$/;"	f	class:lp	typeref:typename:bool
+fancy	include/logline.h	/^    bool fancy;$/;"	m	class:LogLine	typeref:typename:bool
 file	compile_commands.json	/^    "file": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/cplex_instance.cc"/;"	s	object:3
 file	compile_commands.json	/^    "file": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/instance.cc",$/;"	s	object:2
 file	compile_commands.json	/^    "file": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/logger.cc",$/;"	s	object:1
@@ -384,56 +235,25 @@ file	compile_commands.json	/^    "file": "\/home\/lugot\/documents\/university\/
 file	compile_commands.json	/^    "file": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/sparse_matrix.cc",$/;"	s	object:5
 file	compile_commands.json	/^    "file": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/sparse_vector.cc",$/;"	s	object:6
 file	compile_commands.json	/^    "file": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/subgradient_instan/;"	s	object:4
-file	old/compile_commands.json	/^    "file": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/parser.cc",$/;"	s	object:0
-file	trash/src_beforesparsity/compile_commands.json	/^    "file": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/parser.cc",$/;"	s	object:0
 fstar	include/subgradient_instance.h	/^    double fstar, phistar, gap;$/;"	m	class:SubgradientInstance	typeref:typename:double
 gap	include/subgradient_instance.h	/^    double fstar, phistar, gap;$/;"	m	class:SubgradientInstance	typeref:typename:double
-getA	old/lp.cc	/^Eigen::SparseMatrix<double>& lp::getA() { return this->A_; }$/;"	f	class:lp	typeref:typename:Eigen::SparseMatrix<double> &
-getCanonicalForm	trash/src_beforesparsity/cplex_instance.cc	/^CanonicalForm CplexInstance::getCanonicalForm() {$/;"	f	class:CplexInstance	typeref:typename:CanonicalForm
-getModelName	old/lp.cc	/^std::string& lp::getModelName() { return this->model_name_; }$/;"	f	class:lp	typeref:typename:std::string &
 getSize	src/sparse_vector.cc	/^int SparseVector::getSize() { return this->size; }$/;"	f	class:SparseVector	typeref:typename:int
-getSize	trash/src_beforesparsity/sparse_vector.cc	/^int SparseVector::getSize() { return this->size; }$/;"	f	class:SparseVector	typeref:typename:int
 getStatus	src/instance.cc	/^Instance::SolutionStatus Instance::getStatus() { return status; }$/;"	f	class:Instance	typeref:typename:Instance::SolutionStatus
-getStatus	trash/src_beforesparsity/instance.cc	/^Instance::SolutionStatus Instance::getStatus() { return status; }$/;"	f	class:Instance	typeref:typename:Instance::SolutionStatus
-getb	old/lp.cc	/^Eigen::SparseVector<double>& lp::getb() { return this->b_; }$/;"	f	class:lp	typeref:typename:Eigen::SparseVector<double> &
-getc	old/lp.cc	/^Eigen::SparseVector<double>& lp::getc() { return this->c_; }$/;"	f	class:lp	typeref:typename:Eigen::SparseVector<double> &
-i	old/cplex_instance.cc	/^        for (int i = 0; i < rng_.getSize(); ++i) {$/;"	v	typeref:typename:int
-i	old/cplex_instance.cc	/^        for (int i = 0; i < rng_.getSize(); ++i)$/;"	v	typeref:typename:int
-i	old/cplex_instance.cc	/^        for (int i = 0; i < var_.getSize(); i++)$/;"	v	typeref:typename:int
-importModel	old/cplex_instance.cc	/^void CplexInstance::importModel(std::string model_name) {$/;"	f	class:CplexInstance	typeref:typename:void
-importModel	old/lp.cc	/^void lp::importModel(std::string& model_name) {$/;"	f	class:lp	typeref:typename:void
-importModel	old/parser.cc	/^void lp::importModel(std::string& model_name) {$/;"	f	class:lp	typeref:typename:void
 importModel	src/cplex_instance.cc	/^void CplexInstance::importModel(const std::string& model_name) {$/;"	f	class:CplexInstance	typeref:typename:void
-importModel	trash/src_beforesparsity/cplex_instance.cc	/^void CplexInstance::importModel(const std::string& model_name) {$/;"	f	class:CplexInstance	typeref:typename:void
-isConstraintFeasible	trash/src_beforesparsity/subgradient_instance.cc	/^bool SubgradientInstance::isConstraintFeasible($/;"	f	class:SubgradientInstance	typeref:typename:bool
-isSolved	old/cplex_instance.cc	/^bool CplexInstance::isSolved() {$/;"	f	class:CplexInstance	typeref:typename:bool
 isSolved	src/instance.cc	/^bool Instance::isSolved() {$/;"	f	class:Instance	typeref:typename:bool
-isSolved	trash/src_beforesparsity/instance.cc	/^bool Instance::isSolved() {$/;"	f	class:Instance	typeref:typename:bool
 isZero	src/sparse_vector.cc	/^bool SparseVector::isZero(int idx) {$/;"	f	class:SparseVector	typeref:typename:bool
-it	old/cplex_instance.cc	/^            for (IloExpr::LinearIterator it = r.getLinearIterator(); it.ok();$/;"	v	typeref:typename:IloExpr::LinearIterator
-it	old/cplex_instance.cc	/^        for (IloExpr::LinearIterator it = obj_.getLinearIterator(); it.ok();$/;"	v	typeref:typename:IloExpr::LinearIterator
 lb	include/subgradient_instance.h	/^    std::vector<double> lb, ub;$/;"	m	class:SubgradientInstance	typeref:typename:std::vector<double>
-lp	old/lp.cc	/^lp::lp() {$/;"	f	class:lp
 m	include/subgradient_instance.h	/^    int m, n;$/;"	m	class:SubgradientInstance	typeref:typename:int
-m	old/cplex_instance.cc	/^        int m = cplex_.getNrows();$/;"	v	typeref:typename:int
-main	old/main.cc	/^int main() {$/;"	f	typeref:typename:int
-main	src/main.cc	/^int main() {$/;"	f	typeref:typename:int
+main	src/main.cc	/^int main(int argc, char *argv[]) {$/;"	f	typeref:typename:int
 main	src/profiler.py	/^def main():$/;"	f
-main	trash/src_beforesparsity/main.cc	/^int main() {$/;"	f	typeref:typename:int
 markers	src/profiler.py	/^markers = ['+', 'x', 's', '^', 'o', 'd']$/;"	v
 model	include/cplex_instance.h	/^    IloModel model;$/;"	m	class:CplexInstance	typeref:typename:IloModel
 model_name	include/cplex_instance.h	/^    std::string model_name;$/;"	m	class:CplexInstance	typeref:typename:std::string
 model_name	include/subgradient_instance.h	/^    std::string model_name;$/;"	m	class:SubgradientInstance	typeref:typename:std::string
 n	include/subgradient_instance.h	/^    int m, n;$/;"	m	class:SubgradientInstance	typeref:typename:int
-n	old/cplex_instance.cc	/^        int n = cplex_.getNcols();$/;"	v
 ncols	include/sparse_matrix.h	/^    int nrows, ncols;$/;"	m	class:SparseMatrix	typeref:typename:int
-ncols	trash/sparse_matrix.h	/^    int nrows, ncols;$/;"	m	class:SparseMatrix	typeref:typename:int
-negative	trash/src_beforesparsity/sparse_vector.cc	/^bool SparseVector::negative() {$/;"	f	class:SparseVector	typeref:typename:bool
-negativeDot	trash/src_beforesparsity/sparse_vector.cc	/^bool SparseVector::negativeDot(const SparseVector& x, const SparseVector& y) {$/;"	f	class:SparseVector	typeref:typename:bool
-next	trash/sparse_matrix.h	/^    Node* next[2];$/;"	m	class:Node	typeref:typename:Node * [2]
 np	src/profiler.py	/^import numpy as np$/;"	I	nameref:module:numpy
 nrows	include/sparse_matrix.h	/^    int nrows, ncols;$/;"	m	class:SparseMatrix	typeref:typename:int
-nrows	trash/sparse_matrix.h	/^    int nrows, ncols;$/;"	m	class:SparseMatrix	typeref:typename:int
 obj	include/cplex_instance.h	/^    IloObjective obj;$/;"	m	class:CplexInstance	typeref:typename:IloObjective
 operator *	src/sparse_matrix.cc	/^SparseVector SparseMatrix::operator*(const SparseVector& x) {$/;"	f	class:SparseMatrix	typeref:typename:SparseVector
 operator *	src/sparse_vector.cc	/^SparseVector SparseVector::operator*(const SparseMatrix& A) {$/;"	f	class:SparseVector	typeref:typename:SparseVector
@@ -445,17 +265,17 @@ operator +=	src/sparse_vector.cc	/^SparseVector SparseVector::operator+=(const S
 operator -	src/sparse_vector.cc	/^SparseVector SparseVector::operator-(const SparseVector& x) {$/;"	f	class:SparseVector	typeref:typename:SparseVector
 operator -=	src/sparse_vector.cc	/^SparseVector SparseVector::operator-=(const SparseVector& x) {$/;"	f	class:SparseVector	typeref:typename:SparseVector
 operator <	src/sparse_vector.cc	/^bool SparseVector::operator<(const SparseVector& x) {$/;"	f	class:SparseVector	typeref:typename:bool
-operator <<	old/utils.cc	/^const std::ostream& operator<<(std::ostream& os, const Eigen::Triplet<T>& t) {$/;"	f	typeref:typename:const std::ostream &
+operator <<	include/logline.h	/^    friend std::ostream& operator<<(std::ostream& os, const LogLine& line) {$/;"	f	typeref:typename:std::ostream &
 operator <<	src/instance.cc	/^std::ostream& operator<<(std::ostream& os, const Instance::SolutionStatus& s) {$/;"	f	typeref:typename:std::ostream &
-operator <<	src/logger.cc	/^std::ostream& operator<<(std::ostream& os, const Logger& l) {$/;"	f	typeref:typename:std::ostream &
 operator <<	src/sparse_matrix.cc	/^std::ostream& operator<<(std::ostream& os, const SparseMatrix& m) {$/;"	f	typeref:typename:std::ostream &
 operator <<	src/sparse_vector.cc	/^std::ostream& operator<<(std::ostream& os, const SparseVector& x) {$/;"	f	typeref:typename:std::ostream &
-operator <<	trash/sparse_matrix.cc	/^std::ostream& operator<<(std::ostream& os, const SparseMatrix& m) {$/;"	f	typeref:typename:std::ostream &
-operator <<	trash/src_beforesparsity/instance.cc	/^std::ostream& operator<<(std::ostream& os, const Instance::SolutionStatus& s) {$/;"	f	typeref:typename:std::ostream &
-operator <<	trash/src_beforesparsity/sparse_matrix.cc	/^std::ostream& operator<<(std::ostream& os, const SparseMatrix& m) {$/;"	f	typeref:typename:std::ostream &
-operator <<	trash/src_beforesparsity/sparse_vector.cc	/^std::ostream& operator<<(std::ostream& os, const SparseVector& x) {$/;"	f	typeref:typename:std::ostream &
-operator <<	trash/src_beforesparsity/subgradient_instance.cc	/^std::ostream& operator<<(std::ostream& os,$/;"	f	typeref:typename:std::ostream &
 operator ==	src/sparse_vector.cc	/^bool SparseVector::operator==(const SparseVector& x) {$/;"	f	class:SparseVector	typeref:typename:bool
+operator >	src/sparse_vector.cc	/^bool SparseVector::operator>(const SparseVector& x) {$/;"	f	class:SparseVector	typeref:typename:bool
+operator >>	include/logline.h	/^    friend LogLine& operator>>(LogLine& line, bool b) {$/;"	f	typeref:typename:LogLine &
+operator >>	include/logline.h	/^    friend LogLine& operator>>(LogLine& line, double d) {$/;"	f	typeref:typename:LogLine &
+operator >>	include/logline.h	/^    friend LogLine& operator>>(LogLine& line, int i) {$/;"	f	typeref:typename:LogLine &
+operator >>	include/logline.h	/^    friend LogLine& operator>>(LogLine& line, std::string str) {$/;"	f	typeref:typename:LogLine &
+operator >>	include/logline.h	/^    friend LogLine& operator>>(LogLine& line, std::vector<std::string> v) {$/;"	f	typeref:typename:LogLine &
 output	compile_commands.json	/^    "output": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/cplex_instance.o/;"	s	object:3
 output	compile_commands.json	/^    "output": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/instance.o"$/;"	s	object:2
 output	compile_commands.json	/^    "output": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/logger.o"$/;"	s	object:1
@@ -463,63 +283,34 @@ output	compile_commands.json	/^    "output": "\/home\/lugot\/documents\/universi
 output	compile_commands.json	/^    "output": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/sparse_matrix.o"$/;"	s	object:5
 output	compile_commands.json	/^    "output": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/sparse_vector.o"$/;"	s	object:6
 output	compile_commands.json	/^    "output": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/subgradient_inst/;"	s	object:4
-output	old/compile_commands.json	/^    "output": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/parser.o"$/;"	s	object:0
-output	trash/src_beforesparsity/compile_commands.json	/^    "output": "\/home\/lugot\/documents\/university\/master\/thesis\/code\/src\/parser.o"$/;"	s	object:0
 parseArgs	src/profiler.py	/^	def parseArgs(self):$/;"	m	class:CmdLineParser
-phi	trash/src_beforesparsity/subgradient_instance.cc	/^double SubgradientInstance::phi(const Eigen::SparseVector<double>& u,$/;"	f	class:SubgradientInstance	typeref:typename:double
 phistar	include/subgradient_instance.h	/^    double fstar, phistar, gap;$/;"	m	class:SubgradientInstance	typeref:typename:double
 plt	src/profiler.py	/^import matplotlib.pyplot as plt$/;"	I	nameref:module:matplotlib.pyplot
-printObjective	old/solvers.cc	/^static void printObjective(IloObjective obj) {$/;"	f	typeref:typename:void	file:
-project	old/solvers.cc	/^Eigen::SparseVector<double> lp::project(Eigen::SparseVector<double>& u,$/;"	f	class:lp	typeref:typename:Eigen::SparseVector<double>
 prune	src/sparse_vector.cc	/^void SparseVector::prune(double tollerance) {$/;"	f	class:SparseVector	typeref:typename:void
 push_back	src/sparse_vector.cc	/^void SparseVector::push_back(std::pair<int, double> p) {$/;"	f	class:SparseVector	typeref:typename:void
 push_back	src/sparse_vector.cc	/^void SparseVector::push_back(std::pair<int, double> p, double tollerance) {$/;"	f	class:SparseVector	typeref:typename:void
-push_back	trash/src_beforesparsity/sparse_vector.cc	/^void SparseVector::push_back(std::pair<int, double> p) {$/;"	f	class:SparseVector	typeref:typename:void
-r	old/cplex_instance.cc	/^            IloRange& r = rng_[i];   TODO(lugot): cant belive$/;"	v	typeref:typename:IloRange &
 readTable	src/profiler.py	/^def readTable(fp, delimiter):$/;"	f
 rng	include/cplex_instance.h	/^    IloRangeArray rng;$/;"	m	class:CplexInstance	typeref:typename:IloRangeArray
-row	trash/sparse_matrix.h	/^    int row, col;$/;"	m	class:Node	typeref:typename:int
-row_idx	old/cplex_instance.cc	/^        int row_idx = 0;$/;"	v	typeref:typename:int
 rows	include/sparse_matrix.h	/^    std::vector<SparseVector> rows, cols;$/;"	m	class:SparseMatrix	typeref:typename:std::vector<SparseVector>
-rows	trash/sparse_matrix.h	/^    std::vector<Node*> rows, cols;$/;"	m	class:SparseMatrix	typeref:typename:std::vector<Node * >
 saveSolutions	src/subgradient_instance.cc	/^void SubgradientInstance::saveSolutions() {$/;"	f	class:SubgradientInstance	typeref:typename:void
+setDelim	include/logline.h	/^    void setDelim(char delim) {$/;"	f	class:LogLine	typeref:typename:void
+setFancy	include/logline.h	/^    void setFancy(bool fancy) {$/;"	f	class:LogLine	typeref:typename:void
 size	include/sparse_vector.h	/^    int size;$/;"	m	class:SparseVector	typeref:typename:int
-solve	old/cplex_instance.cc	/^bool CplexInstance::solve() {$/;"	f	class:CplexInstance	typeref:typename:bool
 solve	src/cplex_instance.cc	/^bool CplexInstance::solve() {$/;"	f	class:CplexInstance	typeref:typename:bool
 solve	src/subgradient_instance.cc	/^SubgradientInstance::Status SubgradientInstance::solve(Methods method) {$/;"	f	class:SubgradientInstance	typeref:typename:SubgradientInstance::Status
-solve	trash/src_beforesparsity/cplex_instance.cc	/^bool CplexInstance::solve() {$/;"	f	class:CplexInstance	typeref:typename:bool
-solve	trash/src_beforesparsity/subgradient_instance.cc	/^void SubgradientInstance::solve() {$/;"	f	class:SubgradientInstance	typeref:typename:void
 solveConditional	src/subgradient_instance.cc	/^SubgradientInstance::Status SubgradientInstance::solveConditional() {$/;"	f	class:SubgradientInstance	typeref:typename:SubgradientInstance::Status
 solveDeflected	src/subgradient_instance.cc	/^SubgradientInstance::Status SubgradientInstance::solveDeflected() {$/;"	f	class:SubgradientInstance	typeref:typename:SubgradientInstance::Status
 solveHybrid	src/subgradient_instance.cc	/^SubgradientInstance::Status SubgradientInstance::solveHybrid() {$/;"	f	class:SubgradientInstance	typeref:typename:SubgradientInstance::Status
 solvePure	src/subgradient_instance.cc	/^SubgradientInstance::Status SubgradientInstance::solvePure() {$/;"	f	class:SubgradientInstance	typeref:typename:SubgradientInstance::Status
-solveSimplex	old/solvers.cc	/^void lp::solveSimplex() {$/;"	f	class:lp	typeref:typename:void
-solveSubgradient	old/solvers.cc	/^void lp::solveSubgradient() {$/;"	f	class:lp	typeref:typename:void
-sparseVectorCompareInf	src/utils.cc	/^int sparseVectorCompareInf(const Eigen::SparseVector<double>& l,$/;"	f	typeref:typename:int
-sparseVectorCompareInf	trash/src_beforesparsity/utils.cc	/^int sparseVectorCompareInf(const Eigen::SparseVector<double>& l,$/;"	f	typeref:typename:int
-sparseVectorCompareZero	src/utils.cc	/^int sparseVectorCompareZero(const Eigen::SparseVector<double>& l,$/;"	f	typeref:typename:int
-sparseVectorCompareZero	trash/src_beforesparsity/utils.cc	/^int sparseVectorCompareZero(const Eigen::SparseVector<double>& l,$/;"	f	typeref:typename:int
-split	old/utils.cc	/^std::vector<std::string> split(std::string line) {$/;"	f	typeref:typename:std::vector<std::string>
+solveSP	src/subgradient_instance.cc	/^void SubgradientInstance::solveSP(SparseVector* x, const SparseVector& u) {$/;"	f	class:SubgradientInstance	typeref:typename:void
 squaredNorm	src/sparse_vector.cc	/^double SparseVector::squaredNorm(const SparseVector& x) {$/;"	f	class:SparseVector	typeref:typename:double
-squaredNorm	trash/src_beforesparsity/sparse_vector.cc	/^double SparseVector::squaredNorm() {$/;"	f	class:SparseVector	typeref:typename:double
 status	include/instance.h	/^    SolutionStatus status;$/;"	m	class:Instance	typeref:typename:SolutionStatus
 status	include/subgradient_instance.h	/^    Status status;$/;"	m	class:SubgradientInstance	typeref:typename:Status
-sum	trash/src_beforesparsity/sparse_vector.cc	/^SparseVector SparseVector::sum(const SparseVector& x, const SparseVector& y) {$/;"	f	class:SparseVector	typeref:typename:SparseVector
-t	old/cplex_instance.cc	/^                Eigen::Triplet<double> t = Eigen::Triplet<double>($/;"	v	typeref:typename:Eigen::Triplet<double>
-triplets	old/cplex_instance.cc	/^        std::vector<Eigen::Triplet<double>> triplets;$/;"	v	typeref:typename:std::vector<Eigen::Triplet<double>>
-triplets_row	old/cplex_instance.cc	/^        std::vector<Eigen::Triplet<double>> triplets_row;$/;"	v	typeref:typename:iterate over constraints std::vector<Eigen::Triplet<double>>
 ub	include/subgradient_instance.h	/^    std::vector<double> lb, ub;$/;"	m	class:SubgradientInstance	typeref:typename:std::vector<double>
-updateObjective	trash/src_beforesparsity/cplex_instance.cc	/^void CplexInstance::updateObjective(const Eigen::SparseVector<double>& x) {$/;"	f	class:CplexInstance	typeref:typename:void
 ustar	include/subgradient_instance.h	/^    SparseVector xstar, ustar;$/;"	m	class:SubgradientInstance	typeref:typename:SparseVector
 var	include/cplex_instance.h	/^    IloNumVarArray var;$/;"	m	class:CplexInstance	typeref:typename:IloNumVarArray
 varindexer	include/subgradient_instance.h	/^    std::map<std::string, int> varindexer;$/;"	m	class:SubgradientInstance	typeref:typename:std::map<std::string,int>
-who	old/Makefile	/^who:$/;"	t
 who	src/Makefile	/^who:$/;"	t
-who	trash/Makefile	/^who:$/;"	t
-who	trash/src_beforesparsity/Makefile	/^who:$/;"	t
-wow	old/Makefile	/^wow:$/;"	t
 wow	src/Makefile	/^wow:$/;"	t
-wow	trash/Makefile	/^wow:$/;"	t
-wow	trash/src_beforesparsity/Makefile	/^wow:$/;"	t
 xstar	include/subgradient_instance.h	/^    SparseVector xstar, ustar;$/;"	m	class:SubgradientInstance	typeref:typename:SparseVector
 ~CplexInstance	src/cplex_instance.cc	/^CplexInstance::~CplexInstance() {$/;"	f	class:CplexInstance
