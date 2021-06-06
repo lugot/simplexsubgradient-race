@@ -80,10 +80,10 @@ def main():
     fig, ax1 = plt.subplots()
 
     # cut_table = nrows
-    cut_table = 2000
+    cut_table = nrows
 
     print("cols: ", cnames)
-    print(sum(data[:cut_table,cnames['infeasible_dir']]))
+    print(sum(data[:cut_table,cnames['infeasible_dir']]), "infeasible out of", nrows)
 
     color = 'tab:orange'
     col = 'dual'
@@ -91,11 +91,11 @@ def main():
     ax1.set_ylabel(col, color=color)
     ax1.plot(data[:cut_table, cnames[col]], color=color)
 
-    color = 'tab:blue'
-    col = 'infeasible_dir'
-    ax2 = ax1.twinx()
-    ax2.set_ylabel(col, color=color)
-    ax2.plot(data[:cut_table, cnames[col]], color=color)
+    # color = 'tab:blue'
+    # col = 'infeasible_dir'
+    # ax2 = ax1.twinx()
+    # ax2.set_ylabel(col, color=color)
+    # ax2.plot(data[:cut_table, cnames[col]], color=color)
 
     fig.tight_layout()
     plt.show()

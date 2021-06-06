@@ -6,18 +6,44 @@
 #include "../include/globals.h"
 #include "../include/subgradient_instance.h"
 
-int main() {
-    // TODO(lugot): IMPLEMENT better C++ getopt
-    //
-    // CplexInstance lp;
-    // std::cout << lp.isSolved() << std::endl;
+int main(int argc, char *argv[]) {
+    std::string model_name = "mock.lp";
 
-    // std::string model_name = "mock.lp";
-    std::string model_name = "location.lp";
-    // lp.importModel(model_name);
+    int opt;
+    while ((opt = getopt(argc, argv, "veld:i:m:T:M:")) != -1) {
+        switch (opt) {
+            case 'v':
+                VERBOSE = true;
+                break;
+            case 'e':
+                VERBOSE = EXTRA = true;
+                break;
+            case 'l':
+                LOGGING = true;
+                break;
+            case 'd':
+                DELIM = optarg[0];
+                break;
+            case 'i':
+                ITERINFO = atoi(optarg);
+                break;
+            case 'm':
+                model_name = std::string(optarg);
+                break;
+            case 'T':
+                TIMILIMIT = atoi(optarg);
+                break;
+            case 'M':
+                MAXITER = atoi(optarg);
+                break;
+        }
+    }
+
     CplexInstance lp(model_name);
-    lp.solve();
-    std::cout << "lp instance status: " << lp.getStatus() << std::endl;
+    if (VERBOSE) {
+        lp.solve();
+        // std::cout << "lp instance status: " << lp.getStatus() << std::endl;
+    }
 
     SubgradientInstance slp(lp);
     slp.solve(SubgradientInstance::Methods::Hybrid);

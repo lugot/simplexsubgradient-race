@@ -25,6 +25,7 @@ class SubgradientInstance {
         LowLambdaSoft,
         LowLambdaHard,
         ReachedMaxIterations,
+        ReachedTimelimit,
         Optimal,
         EpsilonOptimal
     };
@@ -38,6 +39,7 @@ class SubgradientInstance {
     SparseVector c, b;
     SparseMatrix A;
     std::vector<double> lb, ub;
+    std::vector<bool> equal;  // TODO(lugot): CHANGE in classic sparse vector
 
     std::string model_name;
 
@@ -55,6 +57,9 @@ class SubgradientInstance {
     Status solveDeflected();
     Status solveConditional();
     Status solveHybrid();
+
+    void solveSP(SparseVector* x, const SparseVector& u);
+    bool directionInfeasible(const SparseVector& u, const SparseVector& s);
 
     // save solution
     void saveSolutions();

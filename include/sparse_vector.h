@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <utility>
 
 // forward-declaration TODO(lugot): LEARN
 class SparseMatrix;
@@ -17,9 +18,6 @@ class SparseVector {
 
     int getSize();
 
-    /* std::vector<std::pair<int, double>>::iterator begin();
-    std::vector<std::pair<int, double>>::iterator end(); */
-
     SparseVector operator+(const SparseVector& x);
     SparseVector operator+=(const SparseVector& x);
     SparseVector operator-(const SparseVector& x);
@@ -29,6 +27,7 @@ class SparseVector {
     SparseVector operator*(double scalar);
     SparseVector operator*=(double scalar);
     bool operator<(const SparseVector& x);
+    bool operator>(const SparseVector& x);
     bool operator==(const SparseVector& x);
 
     void prune(double tollerance);

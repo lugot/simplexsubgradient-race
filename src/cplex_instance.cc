@@ -100,6 +100,7 @@ void CplexInstance::importModel(const std::string& model_name) {
         // modeltmp.end();
     } catch (IloException& e) {
         std::cerr << "Concert exception caught: " << e << std::endl;
+        exit(EXIT_FAILURE);
     } catch (...) {
         std::cerr << "Unknown exception caught" << std::endl;
     }
@@ -121,14 +122,14 @@ bool CplexInstance::solve() {
         IloNumArray vals(env);
         env.out() << "Solution status = " << cplex.getStatus() << std::endl;
         env.out() << "Solution value  = " << cplex.getObjValue() << std::endl;
-        cplex.getValues(vals, var);
+        /* cplex.getValues(vals, var);
         env.out() << "Values        = " << vals << std::endl;
         cplex.getSlacks(vals, rng);
         env.out() << "Slacks        = " << vals << std::endl;
         cplex.getDuals(vals, rng);
-        env.out() << "Duals         = " << vals << std::endl;
-        cplex.getReducedCosts(vals, var);
-        env.out() << "Reduced Costs = " << vals << std::endl;
+        env.out() << "Duals         = " << vals << std::endl; */
+        /* cplex.getReducedCosts(vals, var);
+        env.out() << "Reduced Costs = " << vals << std::endl; */
 
         vals.end();
     } catch (IloException& e) {

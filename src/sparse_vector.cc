@@ -286,6 +286,43 @@ bool SparseVector::operator<(const SparseVector& x) {
 
     return true;
 }
+bool SparseVector::operator>(const SparseVector& x) {
+    assert(size == x.size);
+
+    std::vector<std::pair<int, double>>::const_iterator it, itx;
+    it = data.begin();
+    itx = x.data.begin();
+
+    while (it != data.end() && itx != x.data.end()) {
+        // TODO(lugot): PERFORMANCE
+        if (it->first == itx->first) {
+            if (it->second - itx->second < EPS) return false;
+
+            ++it;
+            ++itx;
+        } else if (it->first < itx->first) {
+            if (it->second < EPS) return false;
+
+            ++it;
+        } else {
+            if (itx->second > -EPS) return false;
+
+            ++itx;
+        }
+    }
+    while (it != data.end()) {
+        if (it->second < EPS) return false;
+
+        ++it;
+    }
+    while (itx != x.data.end()) {
+        if (itx->second > -EPS) return false;
+
+        ++itx;
+    }
+
+    return true;
+}
 bool SparseVector::operator==(const SparseVector& x) {
     assert(size == x.size);
 
@@ -396,11 +433,9 @@ void SparseVector::prune(double tollerance) {
 
 std::ostream& operator<<(std::ostream& os, const SparseVector& x) {
     os << x.size << "(" << x.data.size() << ") ";
-    if (VERBOSE) {
-        std::vector<std::pair<int, double>>::const_iterator it;
-        for (it = x.data.begin(); it != x.data.end(); ++it) {
-            os << "(" << it->first << "," << it->second << ") ";
-        }
+    std::vector<std::pair<int, double>>::const_iterator it;
+    for (it = x.data.begin(); it != x.data.end(); ++it) {
+        os << "(" << it->first << "," << it->second << ") ";
     }
 
     return os;
