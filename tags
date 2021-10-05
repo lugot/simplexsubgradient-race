@@ -9,7 +9,17 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	5.9.0	/p5.9.20210905.0/
+$(LIBUTILS)	src/Makefile	/^$(LIBUTILS) : $(HEADERS_LIBUTILS)$/;"	t
+$(LIBUTILS)	src/Makefile	/^$(LIBUTILS): $(OBJS_LIBUTILS)$/;"	t
+$(OBJS)	src/Makefile	/^$(OBJS) : $(HEADERS)$/;"	t
+$(TARGET)	src/Makefile	/^$(TARGET): $(OBJS) $(LIBUTILS)$/;"	t
+.c.o	src/Makefile	/^.c.o :$/;"	t
+.cc.o	src/Makefile	/^.cc.o :$/;"	t
+.cpp.o	src/Makefile	/^.cpp.o :$/;"	t
 A	include/problem.h	/^    SparseMatrix A;$/;"	m	class:Problem	typeref:typename:SparseMatrix
+AR	src/Makefile	/^AR = ar rc$/;"	m
+CC	src/Makefile	/^CC = g++$/;"	m
+CPLEX_HOME	src/Makefile	/^CPLEX_HOME = \/opt\/ibm\/ILOG\/CPLEX_Studio201$/;"	m
 CmdLineParser	scripts_TOFIX/profiler.py	/^class CmdLineParser(object):$/;"	c
 Condition	include/step.h	/^    enum class Mode { None, Deflect, Condition, Hybrid };$/;"	e	enum:Step::Mode
 Conditional	include/subgradient.h	/^    enum class DirectionStatus { Deflected, Conditional };$/;"	e	enum:Subgradient::DirectionStatus
@@ -22,6 +32,7 @@ Decreasing	include/subgradient.h	/^    enum class ObjectiveStatus { MonotoneIncr
 Deflect	include/step.h	/^    enum class Mode { None, Deflect, Condition, Hybrid };$/;"	e	enum:Step::Mode
 Deflected	include/subgradient.h	/^    enum class DirectionStatus { Deflected, Conditional };$/;"	e	enum:Subgradient::DirectionStatus
 DirectionStatus	include/subgradient.h	/^    enum class DirectionStatus { Deflected, Conditional };$/;"	g	class:Subgradient
+EIGEN_HOME	src/Makefile	/^EIGEN_HOME = \/usr\/include\/eigen3$/;"	m
 EPS	include/globals.h	/^#define EPS /;"	d
 EPS_MONOTONICITY	include/globals.h	/^#define EPS_MONOTONICITY /;"	d
 EQUAL	include/problem.h	/^    enum Sense { GREATER, EQUAL, LESS };$/;"	e	enum:Problem::Sense
@@ -31,11 +42,13 @@ Error	include/cplex.h	/^        Error,$/;"	e	enum:Cplex::SolutionStatus
 Feasible	include/cplex.h	/^        Feasible,$/;"	e	enum:Cplex::SolutionStatus
 GREATER	include/problem.h	/^    enum Sense { GREATER, EQUAL, LESS };$/;"	e	enum:Problem::Sense
 HARD_LAMBDA_TRESHOLD	include/globals.h	/^#define HARD_LAMBDA_TRESHOLD /;"	d
+HEADERS	src/Makefile	/^HEADERS =$/;"	m
 HIGHEPS	include/globals.h	/^#define HIGHEPS /;"	d
 Hybrid	include/step.h	/^    enum class Mode { None, Deflect, Condition, Hybrid };$/;"	e	enum:Step::Mode
 IGNORETIMELIMIT	src/globals.cc	/^int IGNORETIMELIMIT = 0;$/;"	v	typeref:typename:int
 IMHERE	include/globals.h	/^#define IMHERE /;"	d
 IMHERE2	include/globals.h	/^#define IMHERE2 /;"	d
+INC	src/Makefile	/^INC = -I..\/include -I${CPLEX_HOME}\/cplex\/include -I${CPLEX_HOME}\/concert\/include -I${EIGEN_/;"	m
 INCLUDE_CPLEX_H_	include/cplex.h	/^#define INCLUDE_CPLEX_H_$/;"	d
 INCLUDE_GLOBALS_H_	include/globals.h	/^#define INCLUDE_GLOBALS_H_$/;"	d
 INCLUDE_LOGLINE_H_	include/logline.h	/^#define INCLUDE_LOGLINE_H_$/;"	d
@@ -50,6 +63,7 @@ Increasing	include/subgradient.h	/^    enum class ObjectiveStatus { MonotoneIncr
 Infeasible	include/cplex.h	/^        Infeasible,$/;"	e	enum:Cplex::SolutionStatus
 InfeasibleOrUnbounded	include/cplex.h	/^        InfeasibleOrUnbounded,$/;"	e	enum:Cplex::SolutionStatus
 LESS	include/problem.h	/^    enum Sense { GREATER, EQUAL, LESS };$/;"	e	enum:Problem::Sense
+LIBS	src/Makefile	/^LIBS = -L${CPLEX_HOME}\/cplex\/lib\/x86-64_linux\/static_pic -L${CPLEX_HOME}\/concert\/lib\/x86-/;"	m
 LOGGING	src/globals.cc	/^bool LOGGING = false;$/;"	v	typeref:typename:bool
 LOWERBOUND	include/globals.h	/^#define LOWERBOUND /;"	d
 LogLine	include/logline.h	/^    LogLine() {$/;"	f	class:LogLine
@@ -66,11 +80,13 @@ MonotoneIncreasing	include/subgradient.h	/^    enum class ObjectiveStatus { Mono
 NOTMONOTIME	include/globals.h	/^#define NOTMONOTIME /;"	d
 NeverSolved	include/cplex.h	/^        NeverSolved,$/;"	e	enum:Cplex::SolutionStatus
 None	include/step.h	/^    enum class Mode { None, Deflect, Condition, Hybrid };$/;"	e	enum:Step::Mode
+OBJS	src/Makefile	/^OBJS = globals.o main.o cplex.o sparse_vector.o subgradient.o sparse_matrix.o  problem.o step.o$/;"	m
 ObjectiveStatus	include/subgradient.h	/^    enum class ObjectiveStatus { MonotoneIncreasing, Increasing, Decreasing };$/;"	g	class:Subgradient
 Optimal	include/cplex.h	/^        Optimal,$/;"	e	enum:Cplex::SolutionStatus
 P	include/globals.h	/^#define P /;"	d
 Problem	include/problem.h	/^class Problem {$/;"	c
 Problem	src/problem.cc	/^Problem::Problem(const Cplex& cinst) {$/;"	f	class:Problem
+RM	src/Makefile	/^RM = rm -rf$/;"	m
 SLOPE_MIN	include/globals.h	/^#define SLOPE_MIN /;"	d
 SOFT_LAMBDA_MAXLIFE	include/globals.h	/^#define SOFT_LAMBDA_MAXLIFE /;"	d
 SOFT_LAMBDA_TRESHOLD	include/globals.h	/^#define SOFT_LAMBDA_TRESHOLD /;"	d
@@ -88,6 +104,7 @@ Step	include/step.h	/^class Step {$/;"	c
 Step	src/step.cc	/^Step::Step(const Problem& lp, Mode mode) {$/;"	f	class:Step
 Subgradient	include/subgradient.h	/^class Subgradient {$/;"	c
 Subgradient	src/subgradient.cc	/^Subgradient::Subgradient() {$/;"	f	class:Subgradient
+TARGET	src/Makefile	/^TARGET = thesis$/;"	m
 TAU	include/step.h	/^    static const double TAU;$/;"	m	class:Step	typeref:typename:const double
 TAU	src/step.cc	/^const double Step::TAU = 1.5;$/;"	m	class:Step	typeref:typename:const double
 TIMILIMIT	src/globals.cc	/^int TIMILIMIT = -1;$/;"	v	typeref:typename:int
@@ -110,6 +127,8 @@ a	scripts_TOFIX/schemes.py	/^a = a.drop([8], axis=1)$/;"	v
 a	scripts_TOFIX/schemes.py	/^a = pd.read_csv("schemes", header=None)$/;"	v
 addOption	scripts_TOFIX/profiler.py	/^    def addOption(self, *args, **kwargs):$/;"	m	class:CmdLineParser
 addRow	src/sparse_matrix.cc	/^void SparseMatrix::addRow($/;"	f	class:SparseMatrix	typeref:typename:void
+again	src/Makefile	/^again:$/;"	t
+all	src/Makefile	/^all: $(TARGET)$/;"	t
 alpha	include/subgradient.h	/^    double alpha;$/;"	m	class:Subgradient	typeref:typename:double
 b	include/problem.h	/^    SparseVector c, b;$/;"	m	class:Problem	typeref:typename:SparseVector
 b	scripts_TOFIX/schemes.py	/^b = pd.DataFrame(columns=list(range(8)))$/;"	v
@@ -122,6 +141,7 @@ blue	scripts_TOFIX/coolprofilertriple.py	/^blue = (0.0, 0.749, 1.0)$/;"	v
 blue	scripts_TOFIX/plotter.py	/^blue = (0, 191, 255)$/;"	v
 blue	scripts_TOFIX/plotter.py	/^blue = (0.0, 0.749, 1.0)$/;"	v
 c	include/problem.h	/^    SparseVector c, b;$/;"	m	class:Problem	typeref:typename:SparseVector
+clean	src/Makefile	/^clean:$/;"	t
 colors	scripts_TOFIX/coolprofilermu.py	/^colors = {0.1: 'tab:red', 0.01: 'tab:purple', 0.001: 'tab:brown', 0.0001: 'tab:pink'}$/;"	v
 colors	scripts_TOFIX/profiler.py	/^colors = ['tab:orange', 'tab:green', 'tab:blue', 'tab:red', 'tab:purple', 'tab:brown', 'tab:pink/;"	v
 cols	include/sparse_matrix.h	/^    std::vector<SparseVector> rows, cols;$/;"	m	class:SparseMatrix	typeref:typename:std::vector<SparseVector>
@@ -318,6 +338,8 @@ ub	include/problem.h	/^    std::vector<double> lb, ub;$/;"	m	class:Problem	typer
 ustar	include/subgradient.h	/^    SparseVector ustar, dstar, xstar;$/;"	m	class:Subgradient	typeref:typename:SparseVector
 var	include/cplex.h	/^    IloNumVarArray var;$/;"	m	class:Cplex	typeref:typename:IloNumVarArray
 varindexer	include/problem.h	/^    std::map<std::string, int> varindexer;$/;"	m	class:Problem	typeref:typename:std::map<std::string,int>
+who	src/Makefile	/^who:$/;"	t
+wow	src/Makefile	/^wow:$/;"	t
 x	include/subgradient.h	/^    SparseVector u, s, d, x;$/;"	m	class:Subgradient	typeref:typename:SparseVector
 xstar	include/subgradient.h	/^    SparseVector ustar, dstar, xstar;$/;"	m	class:Subgradient	typeref:typename:SparseVector
 zero	include/subgradient.h	/^    const SparseVector zero = SparseVector(0);$/;"	m	class:Subgradient	typeref:typename:const SparseVector

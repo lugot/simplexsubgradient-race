@@ -182,8 +182,8 @@ int main(int argc, char* argv[]) {
                 ub = std::max(ub, vals[i]);
             }
             // if (EXTRA) std::cout << "variable upper bound: " << ub << std::endl;
-            // double optimal = cpx.cplex.getObjValue();
             // UPPERBOUND = ub;
+            double optimal = cpx.cplex.getObjValue();
 
             Problem lp(cpx);
             cpx.log << " " << lp.nnz() << std::endl;
