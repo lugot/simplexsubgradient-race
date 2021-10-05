@@ -63,10 +63,6 @@ class LogLine {
             os << *it << std::endl;
         } else {
             os << "Iteration ";
-            if (line.data[0] == "0") os << "[Pure]: ";
-            if (line.data[0] == "1") os << "[Deflected]: ";
-            if (line.data[0] == "2") os << "[Conditional]: ";
-            if (line.data[0] == "3") os << "[Hybrid]: ";
             os << line.data[1] << "\n";
 
             os << "\t"
@@ -74,7 +70,7 @@ class LogLine {
                << "\t"
                << "primal: " << line.data[5] << "\n";
             os << "\t"
-               << "infeasible: " << line.data[2] << " | monotone: " << line.data[3]
+               << "conditional: " << line.data[2] << " | deflected: " << line.data[3]
                << "\n";
             os << "\t"
                << "lambda: " << line.data[6] << " (" << line.data[9]

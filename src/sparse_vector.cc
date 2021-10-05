@@ -9,33 +9,26 @@
 #include "../include/globals.h"
 #include "../include/sparse_matrix.h"
 
-SparseVector::SparseVector(int size) {
-    this->size = size;
-    // this->positive = false;
-}
-/* SparseVector::SparseVector(int size, bool positive) {
-    this->size = size;
-    this->positive = positive;
-} */
+Eigen::SparseVector<double> SparseVector::toEigen() const {
+    Eigen::SparseVector<double> ret(size);
 
-void SparseVector::push_back(std::pair<int, double> p) {
-    if (p.second == 0.0) return;
-
-    data.push_back(p);
-}
-void SparseVector::push_back(std::pair<int, double> p, double tollerance) {
-    if (tollerance == 0.0 && p.second == 0.0) {
-        return;
-    } else if (!std::signbit(tollerance) && fabs(p.second) < tollerance) {
-        return;
+    std::vector<std::pair<int, double>>::const_iterator it;
+    for (it = data.begin(); it != data.end(); ++it) {
+        ret.coeffRef(it->first) = it->second;
     }
 
-    data.push_back(p);
+    return ret;
+}
+SparseVector::SparseVector(Eigen::SparseVector<double> x) {
+    size = x.size();
+    data = std::vector<std::pair<int, double>>(x.nonZeros());
+
+    for (Eigen::SparseVector<double>::InnerIterator it(x); it; ++it) {
+        data.push_back({it.index(), it.value()});
+    }
 }
 
-int SparseVector::getSize() { return this->size; }
-
-SparseVector SparseVector::operator+(const SparseVector& x) {
+SparseVector SparseVector::operator+(const SparseVector& x) const {
     assert(size == x.size);
 
     SparseVector ans = SparseVector(size);
@@ -195,7 +188,7 @@ SparseVector SparseVector::operator-=(const SparseVector& x) {
     return *this;
 }
 
-double SparseVector::operator*(const SparseVector& x) {
+double SparseVector::operator*(const SparseVector& x) const {
     assert(size == x.size);
 
     double ans = 0.0f;
@@ -230,10 +223,10 @@ SparseVector SparseVector::operator*(const SparseMatrix& A) {
     return ans;
 }
 
-SparseVector SparseVector::operator*(double scalar) {
+SparseVector SparseVector::operator*(double scalar) const {
     SparseVector ans(size);
 
-    std::vector<std::pair<int, double>>::iterator it;
+    std::vector<std::pair<int, double>>::const_iterator it;
     for (it = data.begin(); it != data.end(); ++it) {
         ans.push_back({it->first, scalar * it->second});
     }
@@ -250,7 +243,7 @@ SparseVector SparseVector::operator*=(double scalar) {
 }
 
 bool SparseVector::operator<(const SparseVector& x) {
-    assert(size == x.size);
+    assert(x.data.size() == 0 || size == x.size);
 
     std::vector<std::pair<int, double>>::const_iterator it, itx;
     it = data.begin();
@@ -287,7 +280,7 @@ bool SparseVector::operator<(const SparseVector& x) {
     return true;
 }
 bool SparseVector::operator>(const SparseVector& x) {
-    assert(size == x.size);
+    assert(x.data.size() == 0 || size == x.size);
 
     std::vector<std::pair<int, double>>::const_iterator it, itx;
     it = data.begin();
@@ -323,8 +316,8 @@ bool SparseVector::operator>(const SparseVector& x) {
 
     return true;
 }
-bool SparseVector::operator==(const SparseVector& x) {
-    assert(size == x.size);
+bool SparseVector::operator==(const SparseVector& x) const {
+    assert(x.data.size() == 0 || size == x.size);
 
     std::vector<std::pair<int, double>>::const_iterator it, itx;
     it = data.begin();
@@ -361,8 +354,46 @@ bool SparseVector::operator==(const SparseVector& x) {
     return true;
 }
 
+void SparseVector::prune(double tollerance) {
+    data.erase(std::remove_if(data.begin(), data.end(),
+                              [tollerance](const std::pair<int, double>& p) {
+                                  return fabs(p.second) < tollerance;
+                              }),
+               data.end());
+}
+
+bool SparseVector::isZero(int idx) const {
+    std::vector<std::pair<int, double>>::const_iterator it;
+    it = std::lower_bound(data.begin(), data.end(), idx,
+                          [](const std::pair<int, double>& p, int target) {
+                              return p.first < target;
+                          });
+
+    if (it == data.end() || it->first != idx || it->second == 0.0) return true;
+    return false;
+}
+
+// bool SparseVector::incrementIterator(
+//     std::vector<std::pair<int, double>>::iterator* it, int target) {
+//     while ((*it)->first < target && (*it) != this->data.end()) {
+//         ++(*it);
+//     }
+//     return ((*it)->first == target);
+// }
+//
+// bool SparseVector::incrementIterator(
+//     std::vector<std::pair<int, double>>::const_iterator* it, int target)
+//     const { while ((*it)->first < target && (*it) != this->data.end()) {
+//         ++(*it);
+//     }
+//     if ((*it)->first == target) return true;
+//     return false;
+// }
+
+int SparseVector::nonZeroes() { return this->data.size(); }
+
 double SparseVector::squaredNorm(const SparseVector& x) {
-    double ans = 0.0f;
+    double ans = 0.0;
 
     std::vector<std::pair<int, double>>::const_iterator it;
     for (it = x.data.begin(); it != x.data.end(); ++it) {
@@ -370,6 +401,9 @@ double SparseVector::squaredNorm(const SparseVector& x) {
     }
 
     return ans;
+}
+double SparseVector::norm(const SparseVector& x) {
+    return std::sqrt(SparseVector::squaredNorm(x));
 }
 
 double SparseVector::dist(const SparseVector& x, const SparseVector& y) {
@@ -412,23 +446,41 @@ double SparseVector::dist(const SparseVector& x, const SparseVector& y) {
     return ans;
 }
 
-bool SparseVector::isZero(int idx) {
-    std::vector<std::pair<int, double>>::iterator it;
-    it = std::lower_bound(data.begin(), data.end(), idx,
-                          [](const std::pair<int, double>& p, int target) {
-                              return p.first < target;
-                          });
+SparseVector SparseVector::merge(const SparseVector& x, const SparseVector& y) {
+    assert(x.size == y.size);
 
-    if (it == data.end() || it->first != idx || it->second == 0.0) return true;
-    return false;
-}
+    SparseVector ans(x.size);
 
-void SparseVector::prune(double tollerance) {
-    data.erase(std::remove_if(data.begin(), data.end(),
-                              [tollerance](const std::pair<int, double>& p) {
-                                  return fabs(p.second) < tollerance;
-                              }),
-               data.end());
+    std::vector<std::pair<int, double>>::const_iterator itx, ity;
+    itx = x.data.begin();
+    ity = y.data.begin();
+
+    while (itx != x.data.end() && ity != y.data.end()) {
+        if (itx->first == ity->first) {
+            // let's suppose disjoint vectors
+            assert(itx->first != ity->first);
+        } else if (itx->first < ity->first) {
+            ans.push_back({itx->first, itx->second});
+
+            ++itx;
+        } else {
+            ans.push_back({ity->first, ity->second});
+
+            ++ity;
+        }
+    }
+    while (itx != x.data.end()) {
+        ans.push_back({itx->first, itx->second});
+
+        ++itx;
+    }
+    while (ity != y.data.end()) {
+        ans.push_back({ity->first, ity->second});
+
+        ++ity;
+    }
+
+    return ans;
 }
 
 std::ostream& operator<<(std::ostream& os, const SparseVector& x) {
@@ -437,6 +489,7 @@ std::ostream& operator<<(std::ostream& os, const SparseVector& x) {
     for (it = x.data.begin(); it != x.data.end(); ++it) {
         os << "(" << it->first << "," << it->second << ") ";
     }
+    os << " " << SparseVector::squaredNorm(x) << std::endl;
 
     return os;
 }

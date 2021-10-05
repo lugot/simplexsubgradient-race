@@ -1,6 +1,7 @@
 #include "../include/sparse_matrix.h"
 
 #include <cassert>
+#include <iostream>
 
 #include "../include/globals.h"
 
@@ -12,6 +13,25 @@ SparseMatrix::SparseMatrix(int nrows, int ncols) {
     // for (int i = 0; i < nrows; ++i) this->rows[i] = SparseVector(ncols);
     this->cols = std::vector<SparseVector>(ncols, SparseVector(nrows));
     // for (int j = 0; j < ncols; ++j) this->cols[j] = SparseVector(nrows);
+}
+
+Eigen::SparseMatrix<double> SparseMatrix::toEigen() const {
+    Eigen::SparseMatrix<double> ret = Eigen::SparseMatrix<double>(nrows, ncols);
+
+    std::cout << "dimensions " << nrows << " " << ncols << std::endl;
+
+    std::vector<Eigen::Triplet<double>> triplet_list;
+    for (int i = 0; i < nrows; ++i) {
+        std::vector<std::pair<int, double>>::const_iterator it;
+        for (it = rows[i].data.begin(); it != rows[i].data.end(); ++it) {
+            triplet_list.push_back(
+                Eigen::Triplet<double>(i, it->first, it->second));
+        }
+    }
+
+    ret.setFromTriplets(triplet_list.begin(), triplet_list.end());
+
+    return ret;
 }
 
 SparseVector SparseMatrix::operator*(const SparseVector& x) {

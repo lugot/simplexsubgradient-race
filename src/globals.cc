@@ -7,4 +7,6 @@ char DELIM = ',';
 int ITERINFO = 2e9;
 
 int TIMILIMIT = -1;
-int MAXITER = 10;
+int MAXITER = 100;
+int UPPERBOUND = 20000;
+int IGNORETIMELIMIT = 0;
